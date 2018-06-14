@@ -1,0 +1,27 @@
+{
+  "devDependencies": {
+    "@symfony/webpack-encore": "^0.20.1",
+    "@types/prop-types": "^15.5.3",
+    "@types/react": "^16.3.16",
+    "@types/react-bootstrap": "^0.32.9",
+    "@types/react-dom": "^16.0.6",
+    "antd": "^3.6.2",
+    "less": "^3.0.4",
+    "less-loader": "^4.1.0",
+    "prop-types": "^15.6.1",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
+    "ts-import-plugin": "^1.5.2",
+    "ts-loader": "^2.1.0",
+    "typescript": "^2.9.1"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "dev-server": "encore dev-server",
+    "dev": "encore dev",
+    "watch": "encore dev --watch",
+    "build": "encore production"
+  },
+  "dependencies": {}
+}
