@@ -4,6 +4,7 @@ import * as React from "react";
 import {Query} from "react-apollo";
 import {Link} from "../components/Link";
 import {ListComponent} from "../components/ListComponent";
+import {IListProps} from "../types/IDashboard";
 
 const query = gql`
     query PostsQuery ($search: PostsSearchInput, $limit: ListLimit) {
@@ -24,6 +25,13 @@ const query = gql`
     }`;
 
 export class List extends ListComponent {
+    constructor (props: IListProps) {
+        super(props);
+
+        const Content = props.Content;
+        Content.setState({location: location});
+    }
+
     render() {
         return <>
             <h3>Posts List</h3>

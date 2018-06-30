@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import * as React from "react";
 import {Query} from "react-apollo";
 import {Link} from "../components/Link";
+import {IListProps} from "../types/IDashboard";
 
 const query = gql`
     query user($_id: Int!) {

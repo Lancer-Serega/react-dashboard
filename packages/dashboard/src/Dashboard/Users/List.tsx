@@ -6,6 +6,7 @@ import {Query} from "react-apollo";
 import {Link} from "../components/Link";
 import {ListComponent} from "../components/ListComponent";
 import styled, {css} from "emotion";
+import {IListProps} from "../types/IDashboard";
 
 const query = gql`
     query UsersQuery ($search: UsersSearchInput, $limit: ListLimit) {
@@ -33,6 +34,13 @@ const filterStyle = css`
 `;
 
 export class List extends ListComponent {
+    constructor (props: IListProps) {
+        super(props);
+
+        const Content = props.Content;
+        Content.setState({location: location});
+    }
+
     render() {
         return <>
             <h4>Filters</h4>
