@@ -1,0 +1,72 @@
+scalar DateTime
+
+input ListLimit {
+    skip: Int = 0
+    limit: Int = 10
+}
+
+input PeriodInput {
+    from: DateTime!
+    to: DateTime!
+}
+
+input UsersSearchInput {
+    _id: [Int!]
+    name: String
+    email: String
+}
+
+input PostsSearchInput {
+    user_id: Int
+    text: String
+    created: PeriodInput
+}
+
+type Query {
+    post(_id: Int!): Post
+    user(_id: Int!): User
+    users(limit: ListLimit = {}, search: UsersSearchInput = {}): UsersList!
+    posts(limit: ListLimit = {}, search: PostsSearchInput = {}): PostsList!
+}
+
+interface ListNode {
+    count: Int!
+    skip: Int!
+    limit: Int!
+}
+
+type UsersList implements ListNode {
+    node: [User!]!
+    count: Int!
+    skip: Int!
+    limit: Int!
+}
+
+type UserStats {
+    posts: Int!
+}
+
+type User {
+    _id: Int!
+    name: String!
+    email: String!
+    password: String!
+    posts: [Post!]!
+    stats: UserStats!
+    created: DateTime!
+}
+
+type PostsList implements ListNode {
+    node: [Post!]!
+    count: Int!
+    skip: Int!
+    limit: Int!
+}
+
+type Post {
+    _id: Int!
+    text: String!
+    user: User!
+    user_id: Int!
+    created: DateTime!
+}

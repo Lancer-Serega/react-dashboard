@@ -1,0 +1,8 @@
+version: '3.4'
+services:
+    app: 
+        image: node
+        container_name: react-ant
+        entrypoint: /app/docker/entrypoint.sh
+        volumes:
+            - ../:/app

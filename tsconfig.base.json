@@ -1,14 +1,8 @@
 {
   "compilerOptions": {
-    "outDir": "public/build",
     "module": "esnext",
     "target": "es6",
-    "lib": ["es6", "dom"],
     "sourceMap": true,
-    "allowJs": true,
-    "jsx": "react",
-    "moduleResolution": "node",
-    "rootDir": "src",
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
@@ -16,10 +10,7 @@
     "noImplicitAny": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true,
-    "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "baseUrl": "."
+    "experimentalDecorators": true
   },
   "exclude": [
     "node_modules"
