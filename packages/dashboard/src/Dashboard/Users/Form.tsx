@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import * as React from "react";
 import {Query} from "react-apollo";
 import {Link} from "../components/Link";
-import {IListProps} from "../types/IDashboard";
+import {RouteComponent} from "../components/RouteComponent";
 
 const query = gql`
     query user($_id: Int!) {
@@ -25,7 +25,7 @@ const query = gql`
     }
 `;
 
-export class Form extends React.Component<{ id?: string }> {
+export class Form extends RouteComponent<{ id?: string }> {
     render() {
         return <>
             <h3>User {this.props.id}</h3>
