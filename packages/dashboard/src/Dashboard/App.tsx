@@ -1,38 +1,75 @@
+import {navigate, Router} from "@reach/router";
+import {Breadcrumb, Icon, Layout, Menu} from "antd";
+import {ClickParam} from "antd/lib/menu";
+import {observable} from "mobx";
+import {observer} from "mobx-react";
 import * as React from "react";
-import {Icon, Layout, Menu} from "antd";
-import {Form as PostForm} from "./Posts/Form";
-import {List as PostsList} from "./Posts/List";
-import {Form as UserForm} from "./Users/Form";
-import {List as UsersList} from "./Users/List";
-import {Router, navigate} from "@reach/router";
-import {SelectParam} from "antd/lib/menu";
+import {DynamicRoute, RouteMapping} from "../routes";
+import {LocalState} from "../stores/LocalState";
+import {SearchStore} from "../stores/SearchStore";
+import {Route} from "../types/Route";
+import {HeaderMenu} from "./components/HeaderMenu";
+import {LazyRoute} from "./components/LazyRoute";
+import {Link} from "./components/Link";
+import {NotFound} from "./components/NotFound";
+import {RouteComponent} from "./components/RouteComponent";
+import {Dashboard} from "./Dashboard/Dashboard";
 
 const {Header, Content, Footer, Sider} = Layout;
 const SubMenu = Menu.SubMenu;
 
-export class App extends React.Component {
-    public state = {
-        collapsed: false
+type Props = {
+    state: LocalState;
+    search: SearchStore;
+    path: string;
+    routes: Route[];
+    mapping: DynamicRoute;
+}
+
+@observer
+export class App extends React.Component<Props> {
+    @observable
+    private collapsed = this.props.state.collapsed;
+
+    @observable
+    private path = this.props.path;
+
+    // handle menu navigation
+    private handleNavigate = (selected: ClickParam) => {
+        navigate(`${selected.key}`);
     };
 
-    private onCollapse = (collapsed: boolean) => {
-        this.setState({collapsed});
+    // static binding
+    private handleSiderCollapse = (collapsed: boolean) => {
+        this.props.state.save({collapsed});
     };
 
-    private handleNavigate = (selected: SelectParam) => {
-        navigate(`${selected.keyPath}`);
-    };
+    componentDidUpdate() {
+        // Catch update location changes and reset search
+        if (this.props.path !== this.path) {
+            this.props.search.reset(() => {
+                // update in one transaction for performance reason
+                this.path = this.props.path;
+            });
+        }
+    }
 
     public render() {
+        const {collapsed} = this.props.state;
+
         return (
             <Layout style={{minHeight: "100vh"}}>
                 <Sider
                     collapsible={true}
-                    collapsed={this.state.collapsed}
-                    onCollapse={this.onCollapse}
+                    collapsed={collapsed}
+                    onCollapse={this.handleSiderCollapse}
                 >
-                    <div className="logo"/>
-                    <Menu theme="dark" onSelect={this.handleNavigate} mode="inline">
+                    <div className="logo">
+                        <Link to={"/"}>Main</Link>
+                    </div>
+                    <Menu theme="dark"
+                          onClick={this.handleNavigate}
+                          mode="inline">
                         <SubMenu
                             key="users"
                             title={<span><Icon type="user"/><span>Users</span></span>}
@@ -48,23 +85,29 @@ export class App extends React.Component {
                     </Menu>
                 </Sider>
                 <Layout>
-                    <Header style={{background: "#fff", padding: 0}}/>
+                    <Header style={{background: "#fff", padding: 0}}>
+                        <HeaderMenu search={this.props.search}/>
+                    </Header>
                     <Content style={{margin: "0 16px"}}>
-                        {/*<Breadcrumb style={{margin: "16px 0"}}>
-                            <Breadcrumb.Item>User</Breadcrumb.Item>
-                            <Breadcrumb.Item>Bill</Breadcrumb.Item>
-                        </Breadcrumb>*/}
+                        <Breadcrumb style={{margin: "16px 0"}}>
+                            <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
+                        </Breadcrumb>
                         <div style={{padding: 24, background: "#fff", minHeight: 360}}>
                             <Router>
-                                <UsersList path={"/users"}/>
-                                <UserForm path={"/users/:id"}/>
-                                <PostsList path={"/posts"}/>
-                                <PostForm path={"/posts/:id"}/>
+                                {/**/}
+                                <Dashboard search={this.props.search} path={"/"}/>
+                                {this.props.routes.map(route => (
+                                    <LazyRoute key={route.id}
+                                               path={route.path}
+                                               mapping={this.props.mapping}
+                                               route={route}/>
+                                ))}
+                                <NotFound default/>
                             </Router>
                         </div>
                     </Content>
                     <Footer style={{textAlign: "center"}}>
-                        Ant Design ©2016 Created by Ant UED
+                        Copyright
                     </Footer>
                 </Layout>
             </Layout>

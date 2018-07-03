@@ -1,0 +1,12 @@
+[
+  {
+    "id": "users",
+    "path": "/users/*",
+    "module": "UsersRoute"
+  },
+  {
+    "id": "posts",
+    "path": "/posts/*",
+    "module": "PostsRoute"
+  }
+]

@@ -2,6 +2,7 @@ import {navigate} from "@reach/router";
 import {PaginationConfig} from "antd/es/pagination";
 import * as React from "react";
 import {delay} from "../../utils/delay";
+import {RouteComponent} from "./RouteComponent";
 
 type ListNode = {
     count: number;
@@ -14,9 +15,11 @@ type State = {
     limit: number;
     search: any;
     variables: any;
-}
+};
 
-export class ListComponent extends React.Component<{}, State> {
+type Props<P = {}> = P & {path?: string} | P & {default?: boolean};
+
+export class ListComponent<P = {}> extends RouteComponent<Props<P>, State> {
     public state = {skip: 0, limit: 10, search: {}, variables: {}};
 
     protected handlePageChange = (page: number, size: number) => {

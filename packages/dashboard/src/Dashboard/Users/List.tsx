@@ -1,11 +1,10 @@
 import {Button, Col, Divider, Icon, Input, Row, Select, Table} from "antd";
-import {filter} from "async";
 import gql from "graphql-tag";
 import * as React from "react";
 import {Query} from "react-apollo";
 import {Link} from "../components/Link";
 import {ListComponent} from "../components/ListComponent";
-import styled, {css} from "emotion";
+import {css} from "emotion";
 
 const query = gql`
     query UsersQuery ($search: UsersSearchInput, $limit: ListLimit) {
@@ -32,7 +31,7 @@ const filterStyle = css`
     }
 `;
 
-export class List extends ListComponent {
+export class List<P = {}> extends ListComponent<P> {
     render() {
         return <>
             <h4>Filters</h4>

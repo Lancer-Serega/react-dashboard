@@ -3,8 +3,8 @@
   "compilerOptions": {
     "lib": ["es6", "dom"],
     "jsx": "react",
+    "target": "esnext",
     "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
     "outDir": "./dist",
     "rootDir": "./src",
     "baseUrl": "./"

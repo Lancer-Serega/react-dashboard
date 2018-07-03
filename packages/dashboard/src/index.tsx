@@ -1,19 +1,46 @@
-import ApolloClient from "apollo-boost";
+// Entrypoint does authorization:
+// 1. Check session and
+// 2. Load authorization page, or
+// 3. Load dashboard layout and
+// 4. Get accessible routes for user
+
 import * as React from "react";
-import {ApolloProvider} from "react-apollo";
 import * as ReactDOM from "react-dom";
-import {App} from "./Dashboard/App";
-import "./Dashboard/assets/styles.ts";
+import {RouteMapping} from "./routes";
+import {Route} from "./types/Route";
 
-const client = new ApolloClient({
-    uri: "http://localhost:4000/graphql"
-});
+async function checkAuth() {
+    return !location.search.includes("logout");
+}
 
-ReactDOM.render(
-    <>
-        <ApolloProvider client={client}>
-            <App/>
-        </ApolloProvider>
-    </>,
-    document.getElementById("react")
-);
+async function fetchRoutes(): Promise<Route[]> {
+    return require("./routes.json");
+}
+
+async function main() {
+    const authorized = await checkAuth();
+    let Component: any;
+    let props = {};
+
+    if (authorized) {
+        const module = await import(/* webpackChunkName: "dashboard" */"./Dashboard");
+
+        props = {
+            routes: await fetchRoutes(),
+            mapping: RouteMapping
+        };
+
+        Component = module.Loader;
+    } else {
+        const module = await import(/* webpackChunkName: "dashboard" */"./Authorization");
+
+        Component = module.Loader;
+    }
+
+    ReactDOM.render(
+        <Component {...props} />,
+        document.getElementById("react")
+    );
+}
+
+main();
