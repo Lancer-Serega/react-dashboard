@@ -38,7 +38,7 @@ export class List<P = {}> extends ListComponent<P> {
 
             <div className={filterStyle}>
                 <Row type={"flex"} gutter={8}>
-                    <Col span={12}>
+                    <Col span={6}>
                         <Select mode={"tags"}
                                 style={{width: "100%"}}
                                 value={this.state.search["_id"]}
@@ -50,6 +50,19 @@ export class List<P = {}> extends ListComponent<P> {
                                autoComplete={"off"}
                                value={this.state.search["name"]}
                                onChange={(e) => this.handleFilterChange("name", e.target.value)}/>
+                    </Col>
+                    <Col span={6}>
+                        <Input placeholder={"Search by code"}
+                               autoComplete={"off"}
+                               value={this.state.search["code"]}
+                               onChange={(e) => this.handleFilterChange("code", e.target.value)}/>
+                    </Col>
+                    <Col span={6}>
+                        <Input placeholder={"Search by date"}
+                               type={"date"}
+                               autoComplete={"off"}
+                               value={this.state.search["created"]}
+                               onChange={(e) => this.handleFilterChange("created", e.target.value)}/>
                     </Col>
                 </Row>
 
@@ -73,8 +86,8 @@ export class List<P = {}> extends ListComponent<P> {
                         {/*<Table.Column dataIndex={"image"} title={"Image"} />*/}
                         <Table.Column dataIndex={"name"} title={"Name"} />
                         <Table.Column dataIndex={"code"} title={"Code"} />
-                        <Table.Column dataIndex={"price"} title={"Price"} />
-                        <Table.Column dataIndex={"list_price"} title={"List Price"} />
+                        <Table.Column dataIndex={"price"} title={"Price ($)"} />
+                        <Table.Column dataIndex={"list_price"} title={"List Price ($)"} />
                         <Table.Column dataIndex={"quantity"} title={"Quantity"} />
                         <Table.Column dataIndex={"created"} title={"Created"} render={v => new Date(v).toLocaleDateString()}/>
                         {/*<Table.Column dataIndex={"action"} title={""} render={(_, {_id}: any) => (*/}

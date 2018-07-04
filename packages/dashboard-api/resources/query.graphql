@@ -26,6 +26,7 @@ input ProductsSearchInput {
     _id: [Int!]
     name: String
     code: String
+    date: DateTime
 }
 
 type Query {
