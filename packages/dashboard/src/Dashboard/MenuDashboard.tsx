@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import * as React from "react";
 import {Icon, Menu} from "antd";
 import {SelectParam} from "antd/lib/menu";
 import {navigate} from "@reach/router";
 
-class MenuDashboard extends Component {
+class MenuDashboard extends React.Component {
 
     private handleNavigate = (selected: SelectParam) => {
         navigate(`${selected.keyPath}`);
@@ -26,17 +26,17 @@ class MenuDashboard extends Component {
                 >
                     <Menu.Item key="/posts">List</Menu.Item>
                 </SubMenu>
+                {/*<SubMenu*/}
+                    {/*key="orders"*/}
+                    {/*title={<span><Icon type="solution" /><span>Order</span></span>}*/}
+                {/*>*/}
+                    {/*<Menu.Item key="/orders">List</Menu.Item>*/}
+                {/*</SubMenu>*/}
                 <SubMenu
-                    key="order"
-                    title={<span><Icon type="solution" /><span>Order</span></span>}
-                >
-                    <Menu.Item key="/order">List</Menu.Item>
-                </SubMenu>
-                <SubMenu
-                    key="product"
+                    key="products"
                     title={<span><Icon type="tablet" /><span>Product</span></span>}
                 >
-                    <Menu.Item key="/product">List</Menu.Item>
+                    <Menu.Item key="/products">List</Menu.Item>
                 </SubMenu>
             </Menu>
         )

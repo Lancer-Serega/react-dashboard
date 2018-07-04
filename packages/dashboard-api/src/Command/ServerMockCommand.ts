@@ -59,6 +59,7 @@ export class ServerMockCommand extends BaseCommand {
         const input = io.input;
         const incUserId = this.createAutoIncrement();
         const incPostId = this.createAutoIncrement();
+        const incProductId = this.createAutoIncrement();
         const faker: Faker.FakerStatic = require(`faker/locale/${input.getOption("locale")}`);
 
         const rand = (min = 1, max = 10) => Math.round((Math.random() * (max - min)) + min);
@@ -82,6 +83,16 @@ export class ServerMockCommand extends BaseCommand {
             user
         });
 
+        const product = () => ({
+            _id: () => incProductId(),
+            name: () => faker.commerce.productName(),
+            code: () => faker.commerce.productName(),
+            price: () => faker.finance.amount(0.01, 100),
+            list_price: () => faker.finance.amount(0.01, 100),
+            quantity: () => rand(1, 1000),
+            created: () => faker.date.past(),
+        });
+
         return {
             Query: () => ({
                 posts: (root: any, {limit}: any) => {
@@ -99,10 +110,19 @@ export class ServerMockCommand extends BaseCommand {
                         count: 3215,
                         node: () => new MockList(limit.limit, user)
                     });
+                },
+                products: (root: any, {limit}: any) => {
+                    return ({
+                        skip: limit.skip,
+                        limit: limit.limit,
+                        count: 5231,
+                        node: () => new MockList(limit.limit, product)
+                    });
                 }
             }),
             User: user,
             Post: post,
+            Product: product,
             DateTime: () => new Date()
         };
     }

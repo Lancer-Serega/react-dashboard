@@ -2,7 +2,6 @@ import {Spin} from "antd";
 import gql from "graphql-tag";
 import * as React from "react";
 import {Query} from "react-apollo";
-import {IListProps} from "../types/IDashboard";
 
 const query = gql`
     query order($_id: Int!) {

@@ -24,12 +24,9 @@ const query = gql`
         }
     }`;
 
-export class List extends ListComponent {
-    constructor (props: IListProps) {
+export class List<P = {}> extends ListComponent {
+    constructor (props: any) {
         super(props);
-
-        const Content = props.Content;
-        Content.setState({location: location});
     }
 
     render() {

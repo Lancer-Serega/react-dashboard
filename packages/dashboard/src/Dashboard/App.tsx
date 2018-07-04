@@ -4,7 +4,7 @@ import {ClickParam} from "antd/lib/menu";
 import {observable} from "mobx";
 import {observer} from "mobx-react";
 import * as React from "react";
-import {DynamicRoute, RouteMapping} from "../routes";
+import {DynamicRoute} from "../routes";
 import {LocalState} from "../stores/LocalState";
 import {SearchStore} from "../stores/SearchStore";
 import {Route} from "../types/Route";
@@ -12,7 +12,6 @@ import {HeaderMenu} from "./components/HeaderMenu";
 import {LazyRoute} from "./components/LazyRoute";
 import {Link} from "./components/Link";
 import {NotFound} from "./components/NotFound";
-import {RouteComponent} from "./components/RouteComponent";
 import {Dashboard} from "./Dashboard/Dashboard";
 
 const {Header, Content, Footer, Sider} = Layout;
@@ -67,20 +66,30 @@ export class App extends React.Component<Props> {
                     <div className="logo">
                         <Link to={"/"}>Main</Link>
                     </div>
-                    <Menu theme="dark"
-                          onClick={this.handleNavigate}
-                          mode="inline">
+                    <Menu theme="dark" onSelect={this.handleNavigate} mode="inline">
                         <SubMenu
                             key="users"
-                            title={<span><Icon type="user"/><span>Users</span></span>}
+                            title={<span><Icon type="user" /><span>Users</span></span>}
                         >
                             <Menu.Item key="/users">List</Menu.Item>
                         </SubMenu>
                         <SubMenu
                             key="posts"
-                            title={<span><Icon type="file-text"/><span>Posts</span></span>}
+                            title={<span><Icon type="file-text" /><span>Posts</span></span>}
                         >
                             <Menu.Item key="/posts">List</Menu.Item>
+                        </SubMenu>
+                        {/*<SubMenu*/}
+                            {/*key="orders"*/}
+                            {/*title={<span><Icon type="solution" /><span>Order</span></span>}*/}
+                        {/*>*/}
+                            {/*<Menu.Item key="/orders">List</Menu.Item>*/}
+                        {/*</SubMenu>*/}
+                        <SubMenu
+                            key="products"
+                            title={<span><Icon type="tablet" /><span>Product</span></span>}
+                        >
+                            <Menu.Item key="/products">List</Menu.Item>
                         </SubMenu>
                     </Menu>
                 </Sider>

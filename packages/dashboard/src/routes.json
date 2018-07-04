@@ -8,5 +8,10 @@
     "id": "posts",
     "path": "/posts/*",
     "module": "PostsRoute"
+  },
+  {
+    "id": "products",
+    "path": "/products/*",
+    "module": "ProductsRoute"
   }
 ]

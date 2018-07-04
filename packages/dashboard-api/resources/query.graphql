@@ -22,11 +22,19 @@ input PostsSearchInput {
     created: PeriodInput
 }
 
+input ProductsSearchInput {
+    _id: [Int!]
+    name: String
+    code: String
+}
+
 type Query {
     post(_id: Int!): Post
     user(_id: Int!): User
+    product(_id: Int!): Product
     users(limit: ListLimit = {}, search: UsersSearchInput = {}): UsersList!
     posts(limit: ListLimit = {}, search: PostsSearchInput = {}): PostsList!
+    products(limit: ListLimit = {}, search: ProductsSearchInput = {}): ProductsList!
 }
 
 interface ListNode {
@@ -68,5 +76,22 @@ type Post {
     text: String!
     user: User!
     user_id: Int!
+    created: DateTime!
+}
+
+type ProductsList implements ListNode {
+    node: [Product!]!
+    count: Int!
+    skip: Int!
+    limit: Int!
+}
+
+type Product {
+    _id: Int!
+    name: String!
+    code: String!
+    price: Float!
+    list_price: Float!
+    quantity: Int!
     created: DateTime!
 }

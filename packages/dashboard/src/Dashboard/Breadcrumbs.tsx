@@ -1,9 +1,9 @@
-import React, {Component} from "react";
+import * as React from "react";
 import {Breadcrumb} from 'antd';
 import {Link} from "./components/Link";
 import {IBreadcrumbsProps} from './types/IDashboard';
 
-class BreadcrumbsDashboard extends Component<IBreadcrumbsProps> {
+class BreadcrumbsDashboard extends React.Component<IBreadcrumbsProps> {
     constructor(props: IBreadcrumbsProps) {
         super(props);
     }
@@ -13,7 +13,7 @@ class BreadcrumbsDashboard extends Component<IBreadcrumbsProps> {
             '/': 'Home',
             '/users': 'Users',
             '/posts': 'Posts',
-            '/orders': 'Orders',
+            // '/orders': 'Orders',
             '/products': 'Products',
         };
 
