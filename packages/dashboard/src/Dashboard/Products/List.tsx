@@ -16,7 +16,7 @@ const query = gql`
                 code
                 status
                 price
-                list_price
+                listPrice
                 quantity
                 created
             }
@@ -106,7 +106,7 @@ export class List<P = {}> extends ListComponent<P> {
                         <Table.Column dataIndex={"code"} title={"Code"} />
                         <Table.Column dataIndex={"status"} title={"Status"} />
                         <Table.Column dataIndex={"price"} title={"Price ($)"} />
-                        <Table.Column dataIndex={"list_price"} title={"List Price ($)"} />
+                        <Table.Column dataIndex={"listPrice"} title={"List Price ($)"} />
                         <Table.Column dataIndex={"quantity"} title={"Quantity"} />
                         <Table.Column dataIndex={"created"} title={"Created"} render={v => new Date(v).toLocaleDateString()}/>
                         <Table.Column dataIndex={"action"} title={""} render={(_, {_id}: any) => (
