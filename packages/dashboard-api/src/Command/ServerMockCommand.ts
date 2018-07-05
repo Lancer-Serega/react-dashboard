@@ -90,9 +90,27 @@ export class ServerMockCommand extends BaseCommand {
             code: () => faker.random.number(99999999999),
             status: () => faker.random.arrayElement(["active","hidden","disabled"]),
             price: () => faker.finance.amount(0.01, 100),
-            list_price: () => faker.finance.amount(0.01, 100),
+            listPrice: () => faker.finance.amount(0.01, 100),
+            vendor: () => faker.commerce.department(),
+            fullDescription: () => faker.lorem.paragraphs(10),
             quantity: () => rand(1, 1000),
             created: () => faker.date.past(),
+        });
+
+        const productGeneralInformation = () => ({
+            _id: () => incProductId(),
+            image: () => faker.image.technics(80, 80),
+            name: () => faker.commerce.productName(),
+            status: () => faker.random.arrayElement(["active","hidden","disabled"]),
+            price: () => faker.finance.amount(0.01, 100),
+            vendor: () => faker.commerce.department(),
+            fullDescription: () => faker.lorem.paragraphs(10),
+        });
+
+        const productOptionsSettings = () => ({
+            _id: () => incProductId(),
+            optionsType: () => faker.random.arrayElement(['simultaneous', 'sequential']),
+            exceptionsType: () => faker.random.arrayElement(['forbidden', 'allowed']),
         });
 
         return {
@@ -125,6 +143,8 @@ export class ServerMockCommand extends BaseCommand {
             User: user,
             Post: post,
             Product: product,
+            ProductGeneralInformation: productGeneralInformation,
+            ProductOptionsSettings: productOptionsSettings,
             DateTime: () => new Date()
         };
     }

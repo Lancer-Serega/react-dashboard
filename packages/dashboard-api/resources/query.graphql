@@ -32,7 +32,8 @@ input ProductsSearchInput {
 type Query {
     post(_id: Int!): Post
     user(_id: Int!): User
-    product(_id: Int!): Product
+    productGeneralInformation(_id: Int!): ProductGeneralInformation
+    productOptionsSettings(_id: Int!): ProductOptionsSettings
     users(limit: ListLimit = {}, search: UsersSearchInput = {}): UsersList!
     posts(limit: ListLimit = {}, search: PostsSearchInput = {}): PostsList!
     products(limit: ListLimit = {}, search: ProductsSearchInput = {}): ProductsList!
@@ -98,3 +99,20 @@ type Product {
     quantity: Int!
     created: DateTime!
 }
+
+type ProductGeneralInformation {
+    _id: Int!
+    image: String!
+    name: String!
+    status: String!
+    price: Float!
+    vendor: String!
+    fullDescription: String!
+}
+
+type ProductOptionsSettings {
+    _id: Int!
+    optionsType: String!
+    exceptionsType: String!
+}
+

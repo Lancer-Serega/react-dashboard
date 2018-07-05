@@ -36,12 +36,14 @@
     "dev:build": "TS_NODE_PROJECT=tsconfig.webpack.json webpack --config=webpack.config.ts"
   },
   "dependencies": {
+    "@types/draft-js": "^0.10.23",
     "apollo-boost": "^0.1.10",
     "file-loader": "^1.1.11",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.9.2",
     "lodash.debounce": "^4.0.8",
     "react-apollo": "^2.1.8",
+    "react-wysiwyg-typescript": "^1.0.2",
     "url-loader": "^1.0.1"
   }
 }
