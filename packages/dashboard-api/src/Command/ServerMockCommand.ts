@@ -99,7 +99,7 @@ export class ServerMockCommand extends BaseCommand {
 
         const productGeneralInformation = () => ({
             _id: () => incProductId(),
-            image: () => faker.image.technics(80, 80),
+            image: () => faker.random.image(),
             name: () => faker.commerce.productName(),
             status: () => faker.random.arrayElement(["active","hidden","disabled"]),
             price: () => faker.finance.amount(0.01, 100),
@@ -111,6 +111,20 @@ export class ServerMockCommand extends BaseCommand {
             _id: () => incProductId(),
             optionsType: () => faker.random.arrayElement(['simultaneous', 'sequential']),
             exceptionsType: () => faker.random.arrayElement(['forbidden', 'allowed']),
+        });
+
+        const productPricingInventory = () => ({
+            _id: () => incProductId(),
+            code: () => faker.random.number(999999999),
+            listPrice: () => faker.finance.amount(0.01, 1000),
+            inStock: () => faker.random.number(99999),
+            zeroPriceAction: () => faker.random.arrayElement(['R', 'P', 'A']),
+            inventory: () => faker.random.arrayElement(['B', 'D']),
+            orderQuantityMin: () => rand(1, 10),
+            orderQuantityMax: () => rand(11, 100),
+            quantityStep: () => faker.random.number(999),
+            listQuantityCount: () => faker.random.number(999),
+            vat: () => faker.random.boolean(),
         });
 
         return {
@@ -145,6 +159,7 @@ export class ServerMockCommand extends BaseCommand {
             Product: product,
             ProductGeneralInformation: productGeneralInformation,
             ProductOptionsSettings: productOptionsSettings,
+            ProductPricingInventory: productPricingInventory,
             DateTime: () => new Date()
         };
     }

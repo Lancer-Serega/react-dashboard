@@ -33,7 +33,8 @@ class Information extends React.Component<{productId: number}, IInformationState
 
     public render() {
         const {Option} = Select;
-        
+        debugger; // FIXME Delete before deploy!
+
         return (
             <Query query={query} variables={{_id: this.props.productId}}>
                 {({loading, data, error}) => {
@@ -46,6 +47,7 @@ class Information extends React.Component<{productId: number}, IInformationState
                     if (!data) {
                         return <h3>Product Not found</h3>
                     }
+debugger; // FIXME Delete before deploy!
 
                     const product = data.productGeneralInformation;
 
@@ -53,16 +55,16 @@ class Information extends React.Component<{productId: number}, IInformationState
                         editorState: htmlToDraft(product.fullDescription)
                     };
 
-                    return <div data-name="information">
+                    return <div className="form-inputs" data-name="information">
                         <div>
-                            <label>Name:
+                            <label>Name: {'\u00A0'}
                                 <Input placeholder="Product name" value={product.name} />
                             </label>
                         </div>
 
                         <div>
                             <label>Vendor: {'\u00A0'}
-                                <Select value={product.vendor} placeholder="Select vendor" style={{width: 200}}>
+                                <Select value={product.vendor} placeholder="Select vendor">
                                     <Option key={product.vendor}>{product.vendor}</Option>
                                 </Select>
                             </label>
@@ -77,13 +79,13 @@ class Information extends React.Component<{productId: number}, IInformationState
                         </div>
 
                         <div>
-                            <label>Price ($):
+                            <label>Price ($): {'\u00A0'}
                                 <Input placeholder="Product name" value={product.price} />
                             </label>
                         </div>
 
                         <div>
-                            <label>Full Description:
+                            <label>Full Description: {'\u00A0'}
                                 <Draft editorState={this.state.editorState} onEditorStateChange={this.handleEditorState} />
                             </label>
                         </div>
@@ -93,7 +95,6 @@ class Information extends React.Component<{productId: number}, IInformationState
                                 <Select showSearch
                                         placeholder="Select a status"
                                         optionFilterProp="children"
-                                        style={{width: 200}}
                                         value={product.status}
                                 >
                                     <Option value="active">Active</Option>
@@ -104,7 +105,7 @@ class Information extends React.Component<{productId: number}, IInformationState
                         </div>
 
                         <div>
-                            <label>Images: {product.image}</label>
+                            <label>Images: {'\u00A0'} <img src={product.image} alt={product.name} /></label>
                         </div>
                     </div> 
                 }}

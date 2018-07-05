@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Form, Select, Spin,Tooltip, Icon} from "antd";
+import {Form, Select, Spin} from "antd";
 import {Query} from "react-apollo";
 import gql from "graphql-tag";
 
@@ -34,35 +34,29 @@ class OptionsSettings extends React.Component<{productId: number}> {
                     const product = data.productOptionsSettings;
 
                     return (
-                        <div data-name="options-settings">
-                            <label>Options type:
-                                <Item>
-                                    <Select
-                                        showSearch
-                                        placeholder="Select options type"
-                                        optionFilterProp="children"
-                                        style={{width: 200}}
-                                        value={product.optionsType}
-                                    >
-                                        <Option value="simultaneous">Simultaneous</Option>
-                                        <Option value="sequential">Sequential</Option>
-                                    </Select>
-                                </Item>
+                        <div className="form-inputs" data-name="options-settings">
+                            <label>Options type: {'\u00A0'}
+                                <Select
+                                    showSearch
+                                    placeholder="Select options type"
+                                    optionFilterProp="children"
+                                    value={product.optionsType}
+                                >
+                                    <Option value="simultaneous">Simultaneous</Option>
+                                    <Option value="sequential">Sequential</Option>
+                                </Select>
                             </label>
 
-                            <label>Exceptions type:
-                                <Item>
-                                    <Select
-                                        showSearch
-                                        placeholder="Select exceptions type"
-                                        optionFilterProp="children"
-                                        style={{width: 200}}
-                                        value={product.exceptionsType}
-                                    >
-                                        <Option value="forbidden">Forbidden</Option>
-                                        <Option value="allowed">Allowed</Option>
-                                    </Select>
-                                </Item>
+                            <label>Exceptions type: {'\u00A0'}
+                                <Select
+                                    showSearch
+                                    placeholder="Select exceptions type"
+                                    optionFilterProp="children"
+                                    value={product.exceptionsType}
+                                >
+                                    <Option value="forbidden">Forbidden</Option>
+                                    <Option value="allowed">Allowed</Option>
+                                </Select>
                             </label>
                         </div>
                     )

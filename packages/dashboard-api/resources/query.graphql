@@ -32,8 +32,9 @@ input ProductsSearchInput {
 type Query {
     post(_id: Int!): Post
     user(_id: Int!): User
-    productGeneralInformation(_id: Int!): ProductGeneralInformation
-    productOptionsSettings(_id: Int!): ProductOptionsSettings
+    productGeneralInformation(_id: Int!): ProductGeneralInformation!
+    productOptionsSettings(_id: Int!): ProductOptionsSettings!
+    productPricingInventory(_id: Int!): ProductPricingInventory!
     users(limit: ListLimit = {}, search: UsersSearchInput = {}): UsersList!
     posts(limit: ListLimit = {}, search: PostsSearchInput = {}): PostsList!
     products(limit: ListLimit = {}, search: ProductsSearchInput = {}): ProductsList!
@@ -95,7 +96,7 @@ type Product {
     code: String!
     status: String!
     price: Float!
-    list_price: Float!
+    listPrice: Float!
     quantity: Int!
     created: DateTime!
 }
@@ -116,3 +117,16 @@ type ProductOptionsSettings {
     exceptionsType: String!
 }
 
+type ProductPricingInventory {
+    _id: Int!
+    code: Int!
+    listPrice: Float!
+    inStock: Int!
+    zeroPriceAction: String!
+    inventory: String!
+    orderQuantityMin: Int!
+    orderQuantityMax: Int!
+    quantityStep: Int!
+    listQuantityCount: Int!
+    vat: Boolean!
+}
