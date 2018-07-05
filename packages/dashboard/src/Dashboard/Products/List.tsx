@@ -5,12 +5,14 @@ import {Query} from "react-apollo";
 import {ListComponent} from "../components/ListComponent";
 import {css} from "emotion";
 import {Link} from "../components/Link";
+import {debug} from "webpack";
 
 const query = gql`
     query ProductsQuery ($search: ProductsSearchInput, $limit: ListLimit) {
         products (search: $search, limit: $limit) {
             node {
                 _id
+                image
                 name
                 code
                 price
@@ -82,17 +84,17 @@ export class List<P = {}> extends ListComponent<P> {
                            pagination={this.getTablePagination(loading, () => data.products)}
                            dataSource={!loading && data.products.node || []}
                            loading={loading}>
+                        <Table.Column dataIndex={"image"} title={"Image"} render={(src: any, self: any) => (<img src={src} alt={self.name}/>)}/>
                         <Table.Column dataIndex={"_id"} title={"ID"}/>
-                        {/*<Table.Column dataIndex={"image"} title={"Image"} />*/}
                         <Table.Column dataIndex={"name"} title={"Name"} />
                         <Table.Column dataIndex={"code"} title={"Code"} />
                         <Table.Column dataIndex={"price"} title={"Price ($)"} />
                         <Table.Column dataIndex={"list_price"} title={"List Price ($)"} />
                         <Table.Column dataIndex={"quantity"} title={"Quantity"} />
                         <Table.Column dataIndex={"created"} title={"Created"} render={v => new Date(v).toLocaleDateString()}/>
-                        {/*<Table.Column dataIndex={"action"} title={""} render={(_, {_id}: any) => (*/}
-                            {/*<Link to={`/product/${_id}`}><Icon type={"form"}/></Link>*/}
-                        {/*)}/>*/}
+                        <Table.Column dataIndex={"action"} title={""} render={(_, {_id}: any) => (
+                            <Link to={`/products/${_id}`}><Icon type={"form"}/></Link>
+                        )}/>
                     </Table>
                 </>}
             </Query>

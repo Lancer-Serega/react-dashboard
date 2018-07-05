@@ -89,6 +89,7 @@ type ProductsList implements ListNode {
 
 type Product {
     _id: Int!
+    image: String!
     name: String!
     code: String!
     price: Float!

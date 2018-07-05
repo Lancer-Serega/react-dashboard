@@ -5,9 +5,10 @@ import {Query} from "react-apollo";
 import {RouteComponent} from "../components/RouteComponent";
 
 const query = gql`
-    query product($_id: Int!) {
+    query ProductQuery($_id: Int!) {
         product(_id: $_id) {
             _id
+            image
             name
             code
             price
@@ -24,8 +25,6 @@ export class Form extends RouteComponent<{ id?: string }> {
             <h3>Product {this.props.id}</h3>
             <Query query={query} variables={{_id: this.props.id}}>
                 {({loading, data, error}) => {
-                    debugger; // FIXME Delete before deploy!
-
                     if (loading) {
                         return <Spin/>
 
@@ -33,19 +32,21 @@ export class Form extends RouteComponent<{ id?: string }> {
                     if (error) return <p>{error}</p>;
 
                     if (!data) {
-                        return <h3>Not found</h3>
+                        return <h3>Product Not found</h3>
                     }
 
-                    return <>
-                        <p>ID: <b>{data.product._id}</b></p>
-                        {/*<p>Image: {data.product.image}</p>*/}
-                        <p>Name: <b>{data.product.name}</b></p>
-                        <p>Code: <b>{data.product.code}</b></p>
-                        <p>Price ($): <b>{data.product.price}</b></p>
-                        <p>List price ($): <b>{data.product.list_price}</b></p>
-                        <p>Quantity: <b>{data.product.quantity}</b></p>
-                        <p>Created: <b>{new Date(data.product.created).toLocaleDateString()}</b></p>
-                    </>
+                    const {product} = data;
+
+                    return <div>
+                        <p>Image: {product.image}</p>
+                        <p>ID: <b>{product._id}</b></p>
+                        <p>Name: <b>{product.name}</b></p>
+                        <p>Code: <b>{product.code}</b></p>
+                        <p>Price ($): <b>{product.price}</b></p>
+                        <p>List price ($): <b>{product.list_price}</b></p>
+                        <p>Quantity: <b>{product.quantity}</b></p>
+                        <p>Created: <b>{new Date(product.created).toLocaleDateString()}</b></p>
+                    </div>
                 }}
             </Query>
         </>

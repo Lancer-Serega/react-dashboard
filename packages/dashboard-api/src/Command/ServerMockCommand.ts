@@ -85,8 +85,9 @@ export class ServerMockCommand extends BaseCommand {
 
         const product = () => ({
             _id: () => incProductId(),
+            image: () => faker.image.technics(80, 80),
             name: () => faker.commerce.productName(),
-            code: () => faker.commerce.productName(),
+            code: () => faker.random.number(99999999999),
             price: () => faker.finance.amount(0.01, 100),
             list_price: () => faker.finance.amount(0.01, 100),
             quantity: () => rand(1, 1000),
