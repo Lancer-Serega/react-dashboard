@@ -1,54 +1,35 @@
-import {Spin} from "antd";
-import gql from "graphql-tag";
+import {Tabs} from "antd";
 import * as React from "react";
-import {Query} from "react-apollo";
 import {RouteComponent} from "../components/RouteComponent";
-
-const query = gql`
-    query ProductQuery($_id: Int!) {
-        product(_id: $_id) {
-            _id
-            image
-            name
-            code
-            price
-            list_price
-            quantity
-            created
-        }
-    }
-`;
+import General from "./TabsPane/General/General";
+import Images from "./TabsPane/Images/Images";
+import SEO from "./TabsPane/SEO/SEO";
+import Options from "./TabsPane/Options/Options";
+import ShippingProperties from "./TabsPane/ShippingProperties/ShippingProperties";
+import QuantityDiscounts from "./TabsPane/QuantityDiscounts/QuantityDiscounts";
+import Subscribers from "./TabsPane/Subscribers/Subscribers";
+import Features from "./TabsPane/Features/Features";
+import ProductTabs from "./TabsPane/ProductTabs/ProductTabs";
+import Layouts from "./TabsPane/Layouts/Layouts";
 
 export class Form extends RouteComponent<{ id?: string }> {
     render() {
+        const {TabPane} = Tabs;
+
         return <>
             <h3>Product {this.props.id}</h3>
-            <Query query={query} variables={{_id: this.props.id}}>
-                {({loading, data, error}) => {
-                    if (loading) {
-                        return <Spin/>
-
-                    }
-                    if (error) return <p>{error}</p>;
-
-                    if (!data) {
-                        return <h3>Product Not found</h3>
-                    }
-
-                    const {product} = data;
-
-                    return <div>
-                        <p>Image: {product.image}</p>
-                        <p>ID: <b>{product._id}</b></p>
-                        <p>Name: <b>{product.name}</b></p>
-                        <p>Code: <b>{product.code}</b></p>
-                        <p>Price ($): <b>{product.price}</b></p>
-                        <p>List price ($): <b>{product.list_price}</b></p>
-                        <p>Quantity: <b>{product.quantity}</b></p>
-                        <p>Created: <b>{new Date(product.created).toLocaleDateString()}</b></p>
-                    </div>
-                }}
-            </Query>
+            <Tabs defaultActiveKey="general">
+                <TabPane tab="General" key="general"><General productId={this.props.id}/></TabPane>
+                <TabPane tab="Images" key="images"><Images productId={this.props.id}/></TabPane>
+                <TabPane tab="SEO" key="seo"><SEO productId={this.props.id}/></TabPane>
+                <TabPane tab="Options" key="options"><Options productId={this.props.id}/></TabPane>
+                <TabPane tab="Shipping Properties" key="shipping_properties"><ShippingProperties productId={this.props.id}/></TabPane>
+                <TabPane tab="Quantity discounts" key="quantity_discounts"><QuantityDiscounts productId={this.props.id}/></TabPane>
+                <TabPane tab="Subscribers" key="subscribers"><Subscribers productId={this.props.id}/></TabPane>
+                <TabPane tab="Features" key="features"><Features productId={this.props.id}/></TabPane>
+                <TabPane tab="Product tabs" key="product_tabs"><ProductTabs productId={this.props.id}/></TabPane>
+                <TabPane tab="Layouts" key="layouts"><Layouts productId={this.props.id}/></TabPane>
+            </Tabs>
         </>
     }
 }

@@ -5,7 +5,6 @@ import {Query} from "react-apollo";
 import {ListComponent} from "../components/ListComponent";
 import {css} from "emotion";
 import {Link} from "../components/Link";
-import {debug} from "webpack";
 
 const query = gql`
     query ProductsQuery ($search: ProductsSearchInput, $limit: ListLimit) {
@@ -15,6 +14,7 @@ const query = gql`
                 image
                 name
                 code
+                status
                 price
                 list_price
                 quantity
@@ -35,31 +35,47 @@ const filterStyle = css`
 
 export class List<P = {}> extends ListComponent<P> {
     render() {
+        const {Option} = Select;
+
         return <>
             <h4>Filters</h4>
 
             <div className={filterStyle}>
                 <Row type={"flex"} gutter={8}>
-                    <Col span={6}>
+                    <Col span={5}>
                         <Select mode={"tags"}
                                 style={{width: "100%"}}
                                 value={this.state.search["_id"]}
                                 onChange={(values) => this.handleFilterChange("_id", values)}
                                 placeholder={"Product ids"}/>
                     </Col>
-                    <Col span={6}>
+                    <Col span={5}>
                         <Input placeholder={"Search by name"}
                                autoComplete={"off"}
                                value={this.state.search["name"]}
                                onChange={(e) => this.handleFilterChange("name", e.target.value)}/>
                     </Col>
-                    <Col span={6}>
+                    <Col span={5}>
                         <Input placeholder={"Search by code"}
                                autoComplete={"off"}
                                value={this.state.search["code"]}
                                onChange={(e) => this.handleFilterChange("code", e.target.value)}/>
                     </Col>
-                    <Col span={6}>
+                    <Col span={5}>
+                        <Select
+                            showSearch
+                            mode="multiple"
+                            style={{ width: '100%' }}
+                            placeholder="Select a status"
+                            optionFilterProp="children"
+                            onChange={(selectedList) => this.handleFilterChange("status", selectedList)}
+                        >
+                            <Option value="active">Active</Option>
+                            <Option value="hidden">Hidden</Option>
+                            <Option value="disabled">Disabled</Option>
+                        </Select>
+                    </Col>
+                    <Col span={4}>
                         <Input placeholder={"Search by date"}
                                type={"date"}
                                autoComplete={"off"}
@@ -88,6 +104,7 @@ export class List<P = {}> extends ListComponent<P> {
                         <Table.Column dataIndex={"_id"} title={"ID"}/>
                         <Table.Column dataIndex={"name"} title={"Name"} />
                         <Table.Column dataIndex={"code"} title={"Code"} />
+                        <Table.Column dataIndex={"status"} title={"Status"} />
                         <Table.Column dataIndex={"price"} title={"Price ($)"} />
                         <Table.Column dataIndex={"list_price"} title={"List Price ($)"} />
                         <Table.Column dataIndex={"quantity"} title={"Quantity"} />

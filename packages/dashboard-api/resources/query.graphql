@@ -92,6 +92,7 @@ type Product {
     image: String!
     name: String!
     code: String!
+    status: String!
     price: Float!
     list_price: Float!
     quantity: Int!

@@ -2,6 +2,7 @@
   "name": "dashboard",
   "devDependencies": {
     "@reach/router": "^1.1.1",
+    "@types/lodash.debounce": "^4.0.3",
     "@types/node": "^10.5.1",
     "@types/react": "^16.4.6",
     "@types/react-dom": "^16.0.6",
@@ -39,6 +40,7 @@
     "file-loader": "^1.1.11",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.9.2",
+    "lodash.debounce": "^4.0.8",
     "react-apollo": "^2.1.8",
     "url-loader": "^1.0.1"
   }

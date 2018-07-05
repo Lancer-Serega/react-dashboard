@@ -88,6 +88,7 @@ export class ServerMockCommand extends BaseCommand {
             image: () => faker.image.technics(80, 80),
             name: () => faker.commerce.productName(),
             code: () => faker.random.number(99999999999),
+            status: () => faker.random.arrayElement(["active","hidden","disabled"]),
             price: () => faker.finance.amount(0.01, 100),
             list_price: () => faker.finance.amount(0.01, 100),
             quantity: () => rand(1, 1000),
