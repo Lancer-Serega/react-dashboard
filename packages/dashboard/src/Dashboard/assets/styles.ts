@@ -24,7 +24,7 @@ body {
 .form-inputs > div input,
 .form-inputs > div select {
     margin-left: 15px;
-    min-width: 500px; 
+    min-width: 600px; 
     max-width: 60%;
 }
 `;

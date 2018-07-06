@@ -35,6 +35,7 @@ type Query {
     productGeneralInformation(_id: Int!): ProductGeneralInformation!
     productOptionsSettings(_id: Int!): ProductOptionsSettings!
     productPricingInventory(_id: Int!): ProductPricingInventory!
+    productAvailability(_id: Int!): ProductAvailability!
     users(limit: ListLimit = {}, search: UsersSearchInput = {}): UsersList!
     posts(limit: ListLimit = {}, search: PostsSearchInput = {}): PostsList!
     products(limit: ListLimit = {}, search: ProductsSearchInput = {}): ProductsList!
@@ -129,4 +130,12 @@ type ProductPricingInventory {
     quantityStep: Int!
     listQuantityCount: Int!
     vat: Boolean!
+}
+
+type ProductAvailability {
+    _id: Int!
+    userGroups: [String!]!
+    creationDate: DateTime!
+    availSince: DateTime!
+    outOfStockActions: String!
 }

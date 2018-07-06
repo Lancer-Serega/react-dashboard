@@ -127,6 +127,14 @@ export class ServerMockCommand extends BaseCommand {
             vat: () => faker.random.boolean(),
         });
 
+        const productAvailability = () => ({
+            _id: () => incProductId(),
+            userGroups: () => ['All', 'Registered user'],
+            creationDate: () => faker.date.past(),
+            availSince: () => faker.date.past(),
+            outOfStockActions: () => faker.random.arrayElement(['N', 'B', 'S']),
+        });
+
         return {
             Query: () => ({
                 posts: (root: any, {limit}: any) => {
@@ -160,6 +168,7 @@ export class ServerMockCommand extends BaseCommand {
             ProductGeneralInformation: productGeneralInformation,
             ProductOptionsSettings: productOptionsSettings,
             ProductPricingInventory: productPricingInventory,
+            ProductAvailability: productAvailability,
             DateTime: () => new Date()
         };
     }
