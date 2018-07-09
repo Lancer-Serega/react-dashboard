@@ -53,6 +53,7 @@ export class List<P = {}> extends ListComponent<P> {
                     </Col>
                     <Col span={6}>
                         <Input placeholder={"Search by email"}
+                               type="email"
                                autoComplete={"off"}
                                value={this.state.search["email"]}
                                onChange={(e) => this.handleFilterChange("email", e.target.value)}/>

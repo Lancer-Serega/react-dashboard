@@ -1,6 +1,6 @@
 import * as React from "react";
 
-class QuantityDiscounts extends React.Component<{ productId?: string }> {
+class QuantityDiscounts extends React.Component<{productId: number}> {
     public render() {
         return (
             <p>QuantityDiscounts</p>

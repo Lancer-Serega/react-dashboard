@@ -12,11 +12,15 @@ const query = gql`
     query ProductGeneralInformationQuery($_id: Int!) {
         productGeneralInformation(_id: $_id) {
             _id
+            idAli
             image
-            name
-            status
+            title
             price
+            status
             vendor
+            category
+            linkToDw
+            linkToAli
             fullDescription
         }
     }
@@ -33,7 +37,6 @@ class Information extends React.Component<{productId: number}, IInformationState
 
     public render() {
         const {Option} = Select;
-        debugger; // FIXME Delete before deploy!
 
         return (
             <Query query={query} variables={{_id: this.props.productId}}>
@@ -47,7 +50,6 @@ class Information extends React.Component<{productId: number}, IInformationState
                     if (!data) {
                         return <h3>Product Not found</h3>
                     }
-debugger; // FIXME Delete before deploy!
 
                     const product = data.productGeneralInformation;
 
@@ -57,8 +59,34 @@ debugger; // FIXME Delete before deploy!
 
                     return <div className="form-inputs" data-name="information">
                         <div>
-                            <label>Name: {'\u00A0'}
-                                <Input placeholder="Product name" value={product.name} />
+                            <label>ID DW: {'\u00A0'}
+                                <Input placeholder="ID Dropwow" value={product._id} />
+                            </label>
+                        </div>
+
+                        <div>
+                            <label>ID Ali: {'\u00A0'}
+                                <Input placeholder="ID Aliexpress" value={product.idAli} />
+                            </label>
+                        </div>
+
+                        <div>
+                            <label>Title: {'\u00A0'}
+                                <Input placeholder="Product title" value={product.title} />
+                            </label>
+                        </div>
+
+
+                        <div>
+                            <label>Link to dropwow: {'\u00A0'}
+                                <Input placeholder="Link to dropwow" value={product.linkToDw} />
+                            </label>
+                        </div>
+
+
+                        <div>
+                            <label>Link to Ali: {'\u00A0'}
+                                <Input placeholder="Link to Ali" value={product.linkToAli} />
                             </label>
                         </div>
 
@@ -75,12 +103,15 @@ debugger; // FIXME Delete before deploy!
                                 <Tooltip placement="topLeft" title={"Categories to be displayed in the navigation breadcrumbs."}>
                                     <Icon type="question-circle" />
                                 </Tooltip>
+                                <Select value={product.category} placeholder="Select vendor">
+                                    <Option key={product.category}>{product.category}</Option>
+                                </Select>
                             </label>
                         </div>
 
                         <div>
                             <label>Price ($): {'\u00A0'}
-                                <Input placeholder="Product name" value={product.price} />
+                                <Input className="price" placeholder="Product name" value={product.price} />
                             </label>
                         </div>
 

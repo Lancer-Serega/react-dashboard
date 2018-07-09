@@ -85,9 +85,9 @@ export class ServerMockCommand extends BaseCommand {
 
         const product = () => ({
             _id: () => incProductId(),
-            image: () => faker.image.technics(80, 80),
-            name: () => faker.commerce.productName(),
-            code: () => faker.random.number(99999999999),
+            idAli: () => rand(100000000, 999999999),
+            image: () => faker.image.technics(50, 50),
+            title: () => faker.commerce.productName(),
             status: () => faker.random.arrayElement(["active","hidden","disabled"]),
             price: () => faker.finance.amount(0.01, 100),
             listPrice: () => faker.finance.amount(0.01, 100),
@@ -99,12 +99,15 @@ export class ServerMockCommand extends BaseCommand {
 
         const productGeneralInformation = () => ({
             _id: () => incProductId(),
-            image: () => faker.random.image(),
-            name: () => faker.commerce.productName(),
+            idAli: () => rand(100000000, 999999999),
+            title: () => faker.commerce.productName(),
             status: () => faker.random.arrayElement(["active","hidden","disabled"]),
             price: () => faker.finance.amount(0.01, 100),
             vendor: () => faker.commerce.department(),
             fullDescription: () => faker.lorem.paragraphs(10),
+            category: () => faker.commerce.productMaterial(),
+            linkToDw: () => faker.internet.url(),
+            linkToAli: () => faker.internet.url(),
         });
 
         const productOptionsSettings = () => ({
@@ -115,7 +118,7 @@ export class ServerMockCommand extends BaseCommand {
 
         const productPricingInventory = () => ({
             _id: () => incProductId(),
-            code: () => faker.random.number(999999999),
+            idAli: () => rand(100000000, 999999999),
             listPrice: () => faker.finance.amount(0.01, 1000),
             inStock: () => faker.random.number(99999),
             zeroPriceAction: () => faker.random.arrayElement(['R', 'P', 'A']),
@@ -133,6 +136,14 @@ export class ServerMockCommand extends BaseCommand {
             creationDate: () => faker.date.past(),
             availSince: () => faker.date.past(),
             outOfStockActions: () => faker.random.arrayElement(['N', 'B', 'S']),
+        });
+
+        const productExtra = () => ({
+            _id: () => incProductId(),
+            shortDescription: () => faker.lorem.paragraphs(10),
+            popularity: () => faker.random.word(),
+            searchWords: () => faker.random.word(),
+            promoText: () => faker.random.word(),
         });
 
         return {
@@ -169,6 +180,7 @@ export class ServerMockCommand extends BaseCommand {
             ProductOptionsSettings: productOptionsSettings,
             ProductPricingInventory: productPricingInventory,
             ProductAvailability: productAvailability,
+            ProductExtra: productExtra,
             DateTime: () => new Date()
         };
     }

@@ -15,7 +15,8 @@
     "clean": "rimraf dist",
     "build": "npm run clean && tsc",
     "watch": "npm run clean && tsc -w",
-    "start": "./bin/cli server-mock --port=4000"
+    "start": "./bin/cli server-mock --port=4000",
+    "build_and_start": "npm run clean && tsc && ./bin/cli server-mock --port=4000"
   },
   "dependencies": {
     "@types/body-parser": "^1.17.0",

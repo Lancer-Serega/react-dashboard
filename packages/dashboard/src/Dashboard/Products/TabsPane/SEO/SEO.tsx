@@ -1,10 +1,9 @@
 import * as React from "react";
 
-class SEO extends React.Component<{ productId?: string }> {
+class SEO extends React.Component<{productId: number}> {
     public render() {
         return (
-
-            <div></div>
+            <div>SEO</div>
         )
     }
 }

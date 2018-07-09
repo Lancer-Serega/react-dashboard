@@ -1,6 +1,6 @@
 import * as React from "react";
 
-class ShippingProperties extends React.Component<{ productId?: string }> {
+class ShippingProperties extends React.Component<{productId: number}> {
     public render() {
         return (
             <p>ShippingProperties</p>

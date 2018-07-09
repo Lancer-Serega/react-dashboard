@@ -1,6 +1,6 @@
 import * as React from "react";
 
-class Options extends React.Component<{ productId?: string }> {
+class Options extends React.Component<{productId: number}> {
     public render() {
         return (
             <p>Options</p>

@@ -7,7 +7,7 @@ const query = gql`
     query ProductPricingInventoryQuery($_id: Int!) {
         productPricingInventory(_id: $_id) {
             _id
-            code
+            idAli
             listPrice
             inStock
             zeroPriceAction
@@ -43,8 +43,8 @@ class PricingInventory extends React.Component<{productId: number}> {
                     return (
                         <div className="form-inputs" data-name="pricing-inventory">
                             <div>
-                                <label>CODE: {'\u00A0'}
-                                    <Input placeholder="Input product code" value={product.code} />
+                                <label>Ali ID: {'\u00A0'}
+                                    <Input placeholder="Input aliexpress id" value={product.idAli} />
                                 </label>
                             </div>
 

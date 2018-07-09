@@ -27,4 +27,31 @@ body {
     min-width: 600px; 
     max-width: 60%;
 }
+
+.list-product .price {
+    text-align: right;
+}
+
+.list-product .status {
+    border-radius: 3px;
+}
+
+[class^=color-status-] {
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.color-status-active {
+    background-color: #04e4048a;
+}
+
+.color-status-hidden {
+    background-color: #94968f99;
+}
+
+.color-status-disabled {
+    background-color: #ff08028a;
+}
+
+
 `;

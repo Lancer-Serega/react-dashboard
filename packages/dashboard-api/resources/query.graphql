@@ -10,6 +10,26 @@ input PeriodInput {
     to: DateTime!
 }
 
+type Query {
+    post(_id: Int!): Post
+    user(_id: Int!): User
+    productGeneralInformation(_id: Int!): ProductGeneralInformation!
+    productOptionsSettings(_id: Int!): ProductOptionsSettings!
+    productPricingInventory(_id: Int!): ProductPricingInventory!
+    productAvailability(_id: Int!): ProductAvailability!
+    productExtra(_id: Int!): ProductExtra!
+    users(limit: ListLimit = {}, search: UsersSearchInput = {}): UsersList!
+    posts(limit: ListLimit = {}, search: PostsSearchInput = {}): PostsList!
+    products(limit: ListLimit = {}, search: ProductsSearchInput = {}): ProductsList!
+}
+
+interface ListNode {
+    count: Int!
+    skip: Int!
+    limit: Int!
+}
+
+# Filters
 input UsersSearchInput {
     _id: [Int!]
     name: String
@@ -24,29 +44,15 @@ input PostsSearchInput {
 
 input ProductsSearchInput {
     _id: [Int!]
-    name: String
-    code: String
-    date: DateTime
+    idAli: [Int!]
+    title: String
+    vendor: [String!]
+    status: [String!]
+    date: [DateTime!]
 }
+# End Filters
 
-type Query {
-    post(_id: Int!): Post
-    user(_id: Int!): User
-    productGeneralInformation(_id: Int!): ProductGeneralInformation!
-    productOptionsSettings(_id: Int!): ProductOptionsSettings!
-    productPricingInventory(_id: Int!): ProductPricingInventory!
-    productAvailability(_id: Int!): ProductAvailability!
-    users(limit: ListLimit = {}, search: UsersSearchInput = {}): UsersList!
-    posts(limit: ListLimit = {}, search: PostsSearchInput = {}): PostsList!
-    products(limit: ListLimit = {}, search: ProductsSearchInput = {}): ProductsList!
-}
-
-interface ListNode {
-    count: Int!
-    skip: Int!
-    limit: Int!
-}
-
+# User
 type UsersList implements ListNode {
     node: [User!]!
     count: Int!
@@ -67,7 +73,9 @@ type User {
     stats: UserStats!
     created: DateTime!
 }
+# End User
 
+# Post
 type PostsList implements ListNode {
     node: [Post!]!
     count: Int!
@@ -82,7 +90,9 @@ type Post {
     user_id: Int!
     created: DateTime!
 }
+# End Post
 
+# Product
 type ProductsList implements ListNode {
     node: [Product!]!
     count: Int!
@@ -93,8 +103,8 @@ type ProductsList implements ListNode {
 type Product {
     _id: Int!
     image: String!
-    name: String!
-    code: String!
+    title: String!
+    idAli: Int!
     status: String!
     price: Float!
     listPrice: Float!
@@ -104,12 +114,16 @@ type Product {
 
 type ProductGeneralInformation {
     _id: Int!
+    idAli: Int!
     image: String!
-    name: String!
+    title: String!
     status: String!
     price: Float!
     vendor: String!
     fullDescription: String!
+    category: String!
+    linkToDw: String!
+    linkToAli: String!
 }
 
 type ProductOptionsSettings {
@@ -120,7 +134,7 @@ type ProductOptionsSettings {
 
 type ProductPricingInventory {
     _id: Int!
-    code: Int!
+    idAli: Int!
     listPrice: Float!
     inStock: Int!
     zeroPriceAction: String!
@@ -139,3 +153,13 @@ type ProductAvailability {
     availSince: DateTime!
     outOfStockActions: String!
 }
+
+type ProductExtra {
+    _id: Int!
+    detailsView: [String!]!
+    shortDescription: String!
+    popularity: Int!
+    searchWords: String!
+    promoText: String!
+}
+# End Product
