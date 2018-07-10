@@ -13,5 +13,10 @@
     "id": "products",
     "path": "/products/*",
     "module": "ProductsRoute"
+  },
+  {
+    "id": "orders",
+    "path": "/orders/*",
+    "module": "OrdersRoute"
   }
 ]

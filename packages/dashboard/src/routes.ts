@@ -32,5 +32,6 @@ const routes = new DynamicRoute();
 routes.add("users", () => import("./Dashboard/UsersRoute"));
 routes.add("posts", () => import("./Dashboard/PostsRoute"));
 routes.add("products", () => import("./Dashboard/ProductsRoute"));
+routes.add("orders", () => import("./Dashboard/OrdersRoute"));
 
 export const RouteMapping = routes;

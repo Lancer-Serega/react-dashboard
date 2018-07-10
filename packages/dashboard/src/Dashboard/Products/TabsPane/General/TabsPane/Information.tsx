@@ -5,7 +5,7 @@ import gql from "graphql-tag";
 import {Query} from "react-apollo";
 
 interface IInformationState {
-    editorState: any //string
+    editorState: string
 }
 
 const query = gql`

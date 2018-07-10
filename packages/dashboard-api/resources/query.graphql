@@ -11,16 +11,20 @@ input PeriodInput {
 }
 
 type Query {
+    posts(limit: ListLimit = {}, search: PostsSearchInput = {}): PostsList!
     post(_id: Int!): Post
+
+    users(limit: ListLimit = {}, search: UsersSearchInput = {}): UsersList!
     user(_id: Int!): User
+
+    products(limit: ListLimit = {}, search: ProductsSearchInput = {}): ProductsList!
     productGeneralInformation(_id: Int!): ProductGeneralInformation!
     productOptionsSettings(_id: Int!): ProductOptionsSettings!
     productPricingInventory(_id: Int!): ProductPricingInventory!
     productAvailability(_id: Int!): ProductAvailability!
     productExtra(_id: Int!): ProductExtra!
-    users(limit: ListLimit = {}, search: UsersSearchInput = {}): UsersList!
-    posts(limit: ListLimit = {}, search: PostsSearchInput = {}): PostsList!
-    products(limit: ListLimit = {}, search: ProductsSearchInput = {}): ProductsList!
+
+    orders(limit: ListLimit = {}, search: OrdersSearchInput = {}): OrdersList!
 }
 
 interface ListNode {
@@ -49,6 +53,31 @@ input ProductsSearchInput {
     vendor: [String!]
     status: [String!]
     date: [DateTime!]
+}
+
+input OrdersSearchInput {
+    _id: [Int!]
+    productId: [Int!]
+    productTitle: [String!]
+    createdDate: [DateTime!]
+    customerId: [Int!]
+    customerName: [String!]
+    customerAddress: [String!]
+    buyerId: [Int!]
+    buyerEmail: [String!]
+    buyerName: [String!]
+    buyerAddress: [String!]
+    buyerId: [Int!]
+    vendorId: [Int!]
+    vendorName: [String!]
+    vendorStatus: [String!]
+    vendorNumber: [String!]
+    price: [Float!]
+    dwStatus: [String!]
+    dwNumber: [String!]
+    shippingMethod: [String!]
+    shippingCountry: [String!]
+    trackingNumber: String
 }
 # End Filters
 
@@ -163,3 +192,27 @@ type ProductExtra {
     promoText: String!
 }
 # End Product
+
+# Order
+type OrdersList implements ListNode {
+    node: [Order!]!
+    count: Int!
+    skip: Int!
+    limit: Int!
+}
+
+type Order {
+    _id: Int!
+    product: [Product!]!
+    numberDW: Int!
+    numberAli: Int
+    created: DateTime!
+    statusDW: String!
+    statusAli: String
+    trackingNumber: String
+    vendor: String!
+    cost: Float!
+    buyer: String!
+    errorsNotes: String
+}
+# End Order

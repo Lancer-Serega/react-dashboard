@@ -60,9 +60,11 @@ export class ServerMockCommand extends BaseCommand {
         const incUserId = this.createAutoIncrement();
         const incPostId = this.createAutoIncrement();
         const incProductId = this.createAutoIncrement();
+        const incOrderId = this.createAutoIncrement();
         const faker: Faker.FakerStatic = require(`faker/locale/${input.getOption("locale")}`);
 
         const rand = (min = 1, max = 10) => Math.round((Math.random() * (max - min)) + min);
+
         const user = () => ({
             _id: () => incUserId(),
             name: () => faker.internet.userName(),
@@ -81,6 +83,20 @@ export class ServerMockCommand extends BaseCommand {
             user_id: () => rand(1, 100),
             created: () => faker.date.past(),
             user
+        });
+
+        const order = () => ({
+            _id: () => incOrderId(),
+            numberDW: () => rand(100000000, 999999999),
+            numberAli: () => rand(100000000, 999999999),
+            created  : () => faker.date.past(),
+            statusDW: () => faker.random.arrayElement(["processed","completed","open","failed","canceled","backordered"]),
+            statusAli: () => faker.random.arrayElement(["processed","shipped","created","failed"]),
+            trackingNumber: () => faker.random.alphaNumeric(13),
+            vendor: () => faker.random.words(2),
+            cost: () => faker.finance.amount(0.01, 1000),
+            buyer: () => faker.random.words(3),
+            errorsNotes: () => faker.random.words(10),
         });
 
         const product = () => ({
@@ -171,10 +187,19 @@ export class ServerMockCommand extends BaseCommand {
                         count: 5231,
                         node: () => new MockList(limit.limit, product)
                     });
+                },
+                orders: (root: any, {limit}: any) => {
+                    return ({
+                        skip: limit.skip,
+                        limit: limit.limit,
+                        count: 2048,
+                        node: () => new MockList(limit.limit, order)
+                    });
                 }
             }),
             User: user,
             Post: post,
+            Order: order,
             Product: product,
             ProductGeneralInformation: productGeneralInformation,
             ProductOptionsSettings: productOptionsSettings,

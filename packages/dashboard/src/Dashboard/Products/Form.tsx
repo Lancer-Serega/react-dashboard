@@ -12,7 +12,7 @@ import Features from "./TabsPane/Features/Features";
 import ProductTabs from "./TabsPane/ProductTabs/ProductTabs";
 import Layouts from "./TabsPane/Layouts/Layouts";
 
-export class Form extends RouteComponent<{ id: number }> {
+export class Form extends RouteComponent<{ id?: number }> {
     render() {
         const {TabPane} = Tabs;
 
