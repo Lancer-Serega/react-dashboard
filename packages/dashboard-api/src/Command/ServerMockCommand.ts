@@ -7,6 +7,7 @@ import * as morgan from "morgan";
 import {DateTimeType} from "../GraphQL/DateTimeType";
 import {BaseCommand} from "./BaseCommand";
 import bodyParser = require("body-parser");
+import BaseModel from "./Model/BaseModel";
 
 export class ServerMockCommand extends BaseCommand {
     constructor() {
@@ -92,11 +93,25 @@ export class ServerMockCommand extends BaseCommand {
             created  : () => faker.date.past(),
             statusDW: () => faker.random.arrayElement(["processed","completed","open","failed","canceled","backordered"]),
             statusAli: () => faker.random.arrayElement(["processed","shipped","created","failed"]),
-            trackingNumber: () => faker.random.alphaNumeric(13),
+            trackingNumber: () => [faker.random.alphaNumeric(13), faker.random.alphaNumeric(13)],
             vendor: () => faker.random.words(2),
             cost: () => faker.finance.amount(0.01, 1000),
             buyer: () => faker.random.words(3),
-            errorsNotes: () => faker.random.words(10),
+            errorsNotes: () => [faker.random.words(10)],
+        });
+
+        const orderList = () => ({
+            _id: () => incOrderId(),
+            numberDW: () => rand(100000000, 999999999),
+            numberAli: () => rand(100000000, 999999999),
+            created  : () => faker.date.past(),
+            statusDW: () => faker.random.arrayElement(["processed","completed","open","failed","canceled","backordered"]),
+            statusAli: () => faker.random.arrayElement(["processed","shipped","created","failed"]),
+            trackingNumber: () => [faker.random.alphaNumeric(13), faker.random.alphaNumeric(13)],
+            vendor: () => faker.random.words(2),
+            cost: () => faker.finance.amount(0.01, 1000),
+            buyer: () => faker.random.words(3),
+            errorsNotes: () => [faker.random.words(10)],
         });
 
         const product = () => ({
@@ -106,9 +121,24 @@ export class ServerMockCommand extends BaseCommand {
             title: () => faker.commerce.productName(),
             status: () => faker.random.arrayElement(["active","hidden","disabled"]),
             price: () => faker.finance.amount(0.01, 100),
+            count: () => rand(0, 999),
             listPrice: () => faker.finance.amount(0.01, 100),
             vendor: () => faker.commerce.department(),
             fullDescription: () => faker.lorem.paragraphs(10),
+            quantity: () => rand(1, 1000),
+            created: () => faker.date.past(),
+        });
+
+        const productList = () => ({
+            _id: () => incProductId(),
+            idAli: () => rand(100000000, 999999999),
+            image: () => faker.image.technics(50, 50),
+            title: () => faker.commerce.productName(),
+            status: () => faker.random.arrayElement(["active","hidden","disabled"]),
+            price: () => faker.finance.amount(0.01, 100),
+            count: () => rand(0, 999),
+            listPrice: () => faker.finance.amount(0.01, 100),
+            vendor: () => faker.commerce.department(),
             quantity: () => rand(1, 1000),
             created: () => faker.date.past(),
         });
@@ -180,7 +210,7 @@ export class ServerMockCommand extends BaseCommand {
                         node: () => new MockList(limit.limit, user)
                     });
                 },
-                products: (root: any, {limit}: any) => {
+                productList: (root: any, {limit}: any) => {
                     return ({
                         skip: limit.skip,
                         limit: limit.limit,
@@ -188,7 +218,7 @@ export class ServerMockCommand extends BaseCommand {
                         node: () => new MockList(limit.limit, product)
                     });
                 },
-                orders: (root: any, {limit}: any) => {
+                orderList: (root: any, {limit}: any) => {
                     return ({
                         skip: limit.skip,
                         limit: limit.limit,
@@ -200,7 +230,9 @@ export class ServerMockCommand extends BaseCommand {
             User: user,
             Post: post,
             Order: order,
+            OrderList: orderList,
             Product: product,
+            ProductList: productList,
             ProductGeneralInformation: productGeneralInformation,
             ProductOptionsSettings: productOptionsSettings,
             ProductPricingInventory: productPricingInventory,

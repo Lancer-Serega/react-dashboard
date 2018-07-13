@@ -18,13 +18,15 @@ type Query {
     user(_id: Int!): User
 
     products(limit: ListLimit = {}, search: ProductsSearchInput = {}): ProductsList!
+    productList(limit: ListLimit = {}, search: ProductsSearchInput = {}): ProductsList!
     productGeneralInformation(_id: Int!): ProductGeneralInformation!
     productOptionsSettings(_id: Int!): ProductOptionsSettings!
     productPricingInventory(_id: Int!): ProductPricingInventory!
     productAvailability(_id: Int!): ProductAvailability!
     productExtra(_id: Int!): ProductExtra!
 
-    orders(limit: ListLimit = {}, search: OrdersSearchInput = {}): OrdersList!
+    order(limit: ListLimit = {}, search: OrdersSearchInput = {}): Orders!
+    orderList(limit: ListLimit = {}, search: OrdersSearchInput = {}): OrdersList!
 }
 
 interface ListNode {
@@ -67,7 +69,6 @@ input OrdersSearchInput {
     buyerEmail: [String!]
     buyerName: [String!]
     buyerAddress: [String!]
-    buyerId: [Int!]
     vendorId: [Int!]
     vendorName: [String!]
     vendorStatus: [String!]
@@ -77,7 +78,7 @@ input OrdersSearchInput {
     dwNumber: [String!]
     shippingMethod: [String!]
     shippingCountry: [String!]
-    trackingNumber: String
+    trackingNumber: [String!]
 }
 # End Filters
 
@@ -134,10 +135,12 @@ type Product {
     image: String!
     title: String!
     idAli: Int!
-    status: String!
     price: Float!
+    status: String!
     listPrice: Float!
     quantity: Int!
+    count: Int!
+    vendor: String!
     created: DateTime!
 }
 
@@ -195,24 +198,48 @@ type ProductExtra {
 
 # Order
 type OrdersList implements ListNode {
-    node: [Order!]!
+    node: [Orders!]!
     count: Int!
     skip: Int!
     limit: Int!
 }
 
-type Order {
+type Orders {
     _id: Int!
     product: [Product!]!
     numberDW: Int!
-    numberAli: Int
+    numberAli: Int!
     created: DateTime!
     statusDW: String!
-    statusAli: String
-    trackingNumber: String
+    statusAli: String!
+    trackingNumber: [String!]!
     vendor: String!
     cost: Float!
     buyer: String!
-    errorsNotes: String
+    errorsNotes: [String!]!
+}
+
+type Order {
+    _id: Int!
+    product: [Product!]!
+    createdDate: DateTime!
+    customerId: Int
+    customerName: String
+    customerAddress: String
+    buyerId: Int
+    buyerEmail: String
+    buyerName: String
+    buyerAddress: String
+    vendorId: Int
+    vendorName: String
+    vendorStatus: String
+    vendorNumber: Int
+    price: Float
+    dwStatus: String!
+    dwNumber: Int!
+    shippingMethod: String
+    shippingCountry: String
+    trackingNumber: [String!]
+    errorsNotes: [String!]
 }
 # End Order

@@ -7,8 +7,8 @@ import {css} from "emotion";
 import {Link} from "../components/Link";
 
 const query = gql`
-    query ProductsQuery ($search: ProductsSearchInput, $limit: ListLimit) {
-        products (search: $search, limit: $limit) {
+    query ProductListQuery ($search: ProductsSearchInput, $limit: ListLimit) {
+        productList (search: $search, limit: $limit) {
             node {
                 _id
                 image
@@ -19,6 +19,8 @@ const query = gql`
                 listPrice
                 quantity
                 created
+                count
+                vendor
             }
             count
             limit
@@ -46,7 +48,7 @@ export class List<P = {}> extends ListComponent<P> {
         const {Option} = Select;
         const { RangePicker } = DatePicker;
 
-        return <>
+        return <div>
             <h4>Filters</h4>
 
             <div className={filterStyle}>
@@ -123,11 +125,10 @@ export class List<P = {}> extends ListComponent<P> {
             <Query query={query}
                    fetchPolicy="cache-and-network"
                    variables={this.getQueryVariables()}>
-                {({loading, data}) => <>
+                {({loading, data}) => <div className="table list-product">
                     <Table rowKey={"_id"}
-                           className="list-product"
-                           pagination={this.getTablePagination(loading, () => data.products)}
-                           dataSource={!loading && data.products.node || []}
+                           pagination={this.getTablePagination(loading, () => data.productList)}
+                           dataSource={!loading && data.productList.node || []}
                            loading={loading}>
                         <Table.Column dataIndex={"image"} title={"Image"} render={(src: string) => (<img src={src} />)}/>
                         <Table.Column dataIndex={"_id"} title={"ID"}/>
@@ -142,8 +143,8 @@ export class List<P = {}> extends ListComponent<P> {
                             <Link to={`/products/${_id}`}><Icon type={"form"}/></Link>
                         )}/>
                     </Table>
-                </>}
+                </div>}
             </Query>
-        </>
+        </div>
     }
 }

@@ -1,4 +1,4 @@
-import {Button, Col, DatePicker, Icon, Input, Divider, Row, Select, Table} from "antd";
+import {Button, Col, DatePicker, Icon, Input, Divider, Row, Select, Table, Slider, Collapse} from "antd";
 import gql from "graphql-tag";
 import * as React from "react";
 import {Query} from "react-apollo";
@@ -7,13 +7,13 @@ import {ListComponent} from "../components/ListComponent";
 import {css} from "emotion";
 
 const query = gql`
-    query OrdersQuery ($search: OrdersSearchInput, $limit: ListLimit) {
-        orders (search: $search, limit: $limit) {
+    query OrderListQuery ($search: OrdersSearchInput, $limit: ListLimit) {
+        orderList (search: $search, limit: $limit) {
             node {
                 _id
                 numberDW
                 numberAli
-                created  # дата и время создания
+                created
                 statusDW
                 statusAli
                 trackingNumber
@@ -40,80 +40,212 @@ export class List<P = {}> extends ListComponent {
         super(props);
     }
 
+    private static prepareStatusAli (status: string) {
+        return <span className={`color-status-${status.toLowerCase()}`}>{status}</span>
+    }
+
+    private static prepareStatusDW (status: string) {
+        return <span className={`color-status-${status.toLowerCase()}`}>{status}</span>
+    }
+
+    private static preparePrice (price: number) {
+        return (Math.trunc(price * 100) / 100).toFixed(2);
+    }
+
     render() {
         const {Option} = Select;
         const {RangePicker} = DatePicker;
+        const {Panel} = Collapse;
 
         return <>
-            <h4>Filters</h4>
+            <Collapse>
+                <Panel header="Filters orders" key="filter-order">
+                    <div className={filterStyle}>
+                        <Row type={"flex"} gutter={8}>
+                            <Col span={8}>
+                                <Select mode={"tags"}
+                                        style={{width: "100%"}}
+                                        value={this.state.search["_id"]}
+                                        onChange={(values) => this.handleFilterChange("_id", values)}
+                                        placeholder={"Orders ids"}/>
+                            </Col>
+                            <Col span={8}>
+                                <Select mode={"tags"}
+                                        style={{width: "100%"}}
+                                        value={this.state.search["productTitle"]}
+                                        onChange={(values) => this.handleFilterChange("productTitle", values)}
+                                        placeholder={"Product title"}/>
+                            </Col>
+                            <Col span={8}>
+                                <Select mode={"tags"}
+                                        style={{width: "100%"}}
+                                        value={this.state.search["trackingNumber"]}
+                                        onChange={(values) => this.handleFilterChange("trackingNumber", values)}
+                                        placeholder={"Tracking Number"}/>
+                            </Col>
 
-            <div className={filterStyle}>
-                <Row type={"flex"} gutter={8}>
-                    <Col span={8}>
-                        <Select mode={"tags"}
-                                style={{width: "100%"}}
-                                value={this.state.search["_id"]}
-                                onChange={(values) => this.handleFilterChange("_id", values)}
-                                placeholder={"Product ids"}/>
-                    </Col>
-                    <Col span={8}>
-                        <Select mode={"tags"}
-                                style={{width: "100%"}}
-                                value={this.state.search["idAli"]}
-                                onChange={(values) => this.handleFilterChange("idAli", values)}
-                                placeholder={"Search by ali IDs"}/>
-                    </Col>
-                    <Col span={8}>
-                        <Input placeholder={"Search by title"}
-                               style={{width: "100%"}}
-                               value={this.state.search["title"]}
-                               onChange={(e) => this.handleFilterChange("title", e.target.value)}/>
-                    </Col>
+                            <br /><br />
 
-                    <br/>
-                    <br/>
+                            <Col span={8}>
+                                <Select mode={"tags"}
+                                        style={{width: "100%"}}
+                                        value={this.state.search["productId"]}
+                                        onChange={(values) => this.handleFilterChange("productId", values)}
+                                        placeholder={"Product ids"}/>
+                            </Col>
+                            <Col span={8}>
+                                <RangePicker showTime
+                                             format="YYYY/MM/DD HH:mm:ss"
+                                             style={{width: "100%"}}
+                                             value={this.state.search["createdDate"]}
+                                             onChange={(e: any) => this.handleFilterChange("createdDate", e)}
+                                />
+                            </Col>
 
-                    <Col span={8}>
-                        <Select
-                            showSearch
-                            mode="multiple"
-                            style={{ width: '100%' }}
-                            placeholder="Select a vendor"
-                            optionFilterProp="children"
-                            onChange={(selectedList) => this.handleFilterChange("vendor", selectedList)}
-                        >
-                            <Option value="v1">Vendor 1</Option>
-                            <Option value="v2">Vendor 2</Option>
-                            <Option value="v3">Vendor 3</Option>
-                        </Select>
-                    </Col>
-                    <Col span={8}>
-                        <Select
-                            showSearch
-                            mode="multiple"
-                            style={{ width: '100%' }}
-                            placeholder="Select a status"
-                            optionFilterProp="children"
-                            onChange={(selectedList) => this.handleFilterChange("status", selectedList)}
-                        >
-                            <Option value="active">Active</Option>
-                            <Option value="hidden">Hidden</Option>
-                            <Option value="disabled">Disabled</Option>
-                        </Select>
-                    </Col>
-                    <Col span={8}>
-                        <RangePicker format='YYYY-MM-DD'
-                                     style={{width: "100%"}}
-                                     value={this.state.search["created"]}
-                                     onChange={(e: any) => this.handleFilterChange("created", e)}
-                        />
-                    </Col>
-                </Row>
+                            <Col span={8}>
+                                <Slider range
+                                        defaultValue={this.state.search["price"] || [0, 1000]}
+                                        onChange={(value) => this.handleFilterChange("price", value)}
+                                />
+                            </Col>
 
-                <div className={"footer"}>
-                    <Button onClick={this.handleResetState}>Reset</Button>
-                </div>
-            </div>
+                            <br /><br />
+
+                            <Col span={8}>
+                                <Select mode={"tags"}
+                                        style={{width: "100%"}}
+                                        value={this.state.search["customerId"]}
+                                        onChange={(values) => this.handleFilterChange("customerId", values)}
+                                        placeholder={"Customer Ids"}/>
+                            </Col>
+                            <Col span={8}>
+                                <Select mode={"tags"}
+                                        style={{width: "100%"}}
+                                        value={this.state.search["customerName"]}
+                                        onChange={(values) => this.handleFilterChange("customerName", values)}
+                                        placeholder={"Customer Name"}/>
+                            </Col>
+                            <Col span={8}>
+                                <Select mode={"tags"}
+                                        style={{width: "100%"}}
+                                        value={this.state.search["customerAddress"]}
+                                        onChange={(values) => this.handleFilterChange("customerAddress", values)}
+                                        placeholder={"Customer Address"}/>
+                            </Col>
+
+                            <br /><br />
+
+                            <Col span={6}>
+                                <Select mode={"tags"}
+                                        style={{width: "100%"}}
+                                        value={this.state.search["buyerId"]}
+                                        onChange={(values) => this.handleFilterChange("buyerId", values)}
+                                        placeholder={"Buyer Ids"}/>
+                            </Col>
+                            <Col span={6}>
+                                <Select mode={"tags"}
+                                        style={{width: "100%"}}
+                                        value={this.state.search["buyerEmail"]}
+                                        onChange={(values) => this.handleFilterChange("buyerEmail", values)}
+                                        placeholder={"Buyer Email"}/>
+                            </Col>
+                            <Col span={6}>
+                                <Select mode={"tags"}
+                                        style={{width: "100%"}}
+                                        value={this.state.search["buyerName"]}
+                                        onChange={(values) => this.handleFilterChange("buyerName", values)}
+                                        placeholder={"Buyer Name"}/>
+                            </Col>
+                            <Col span={6}>
+                                <Select mode={"tags"}
+                                        style={{width: "100%"}}
+                                        value={this.state.search["buyerAddress"]}
+                                        onChange={(values) => this.handleFilterChange("buyerAddress", values)}
+                                        placeholder={"Buyer Address"}/>
+                            </Col>
+
+                            <br /><br />
+
+                            <Col span={6}>
+                                <Select mode={"tags"}
+                                        style={{width: "100%"}}
+                                        value={this.state.search["vendorId"]}
+                                        onChange={(values) => this.handleFilterChange("vendorId", values)}
+                                        placeholder={"Vendor Ids"}/>
+                            </Col>
+                            <Col span={6}>
+                                <Select mode={"tags"}
+                                        style={{width: "100%"}}
+                                        value={this.state.search["vendorName"]}
+                                        onChange={(values) => this.handleFilterChange("vendorName", values)}
+                                        placeholder={"Vendor Name"}/>
+                            </Col>
+                            <Col span={6}>
+                                <Select mode={"tags"}
+                                        style={{width: "100%"}}
+                                        value={this.state.search["vendorStatus"]}
+                                        onChange={(values) => this.handleFilterChange("vendorStatus", values)}
+                                        placeholder={"Vendor Status"}>
+                                    <Option value={"processed"}>Processed</Option>
+                                    <Option value={"shipped"}>Shipped</Option>
+                                    <Option value={"created"}>Created</Option>
+                                    <Option value={"failed"}>Failed</Option>
+                                </Select>
+                            </Col>
+                            <Col span={6}>
+                                <Select mode={"tags"}
+                                        style={{width: "100%"}}
+                                        value={this.state.search["vendorNumber"]}
+                                        onChange={(values) => this.handleFilterChange("vendorNumber", values)}
+                                        placeholder={"Vendor Number"}/>
+                            </Col>
+
+                            <br /><br />
+
+                            <Col span={6}>
+                                <Select mode={"tags"}
+                                        style={{width: "100%"}}
+                                        value={this.state.search["dwStatus"]}
+                                        onChange={(values) => this.handleFilterChange("dwStatus", values)}
+                                        placeholder={"Dropwow Status"}>
+                                    <Option value="processed">Processed</Option>
+                                    <Option value="completed">Completed</Option>
+                                    <Option value="open">Open</Option>
+                                    <Option value="failed">Failed</Option>
+                                    <Option value="canceled">Canceled</Option>
+                                    <Option value="backordered">Backordered</Option>
+                                </Select>
+                            </Col>
+                            <Col span={6}>
+                                <Select mode={"tags"}
+                                        style={{width: "100%"}}
+                                        value={this.state.search["dwNumber"]}
+                                        onChange={(values) => this.handleFilterChange("dwNumber", values)}
+                                        placeholder={"Dropwow Number"}/>
+                            </Col>
+                            <Col span={6}>
+                                <Select mode={"tags"}
+                                        style={{width: "100%"}}
+                                        value={this.state.search["shippingMethod"]}
+                                        onChange={(values) => this.handleFilterChange("shippingMethod", values)}
+                                        placeholder={"Shipping Method"}/>
+                            </Col>
+                            <Col span={6}>
+                                <Select mode={"tags"}
+                                        style={{width: "100%"}}
+                                        value={this.state.search["shippingCountry"]}
+                                        onChange={(values) => this.handleFilterChange("shippingCountry", values)}
+                                        placeholder={"Shipping Country"}/>
+                            </Col>
+
+                        </Row>
+
+                        <div className={"footer"}>
+                            <Button onClick={this.handleResetState}>Reset</Button>
+                        </div>
+                    </div>
+                </Panel>
+            </Collapse>
 
             <Divider/>
 
@@ -122,30 +254,29 @@ export class List<P = {}> extends ListComponent {
             <Query query={query}
                    fetchPolicy="cache-and-network"
                    variables={this.getQueryVariables()}>
-                {({loading, data}) => <>
+                {({loading, data}) => <div className="table list-order">
                     <Table rowKey={"_id"}
-                           className="list-product"
-                           pagination={this.getTablePagination(loading, () => data.orders)}
-                           dataSource={!loading && data.orders.node || []}
+                           pagination={this.getTablePagination(loading, () => data.orderList)}
+                           dataSource={!loading && data.orderList.node || []}
                            loading={loading}>
                         <Table.Column width="5%" dataIndex={"_id"} title={"ID"}/>
-                        <Table.Column width="10%" dataIndex={"numberDW"} title={"Number DW"}/>
-                        <Table.Column width="10%" dataIndex={"numberAli"} title={"Number Ali"}/>
-                        <Table.Column width="10%" dataIndex={"created"} title={"Created"}
+                        <Table.Column width="7%" dataIndex={"numberDW"} title={"Number DW"}/>
+                        <Table.Column width="7%" dataIndex={"numberAli"} title={"Number Ali"}/>
+                        <Table.Column width="7%" dataIndex={"created"} title={"Created"}
                                       render={v => new Date(v).toLocaleDateString()}/>
-                        <Table.Column width="10%" dataIndex={"statusDW"} title={"Status DW"}/>
-                        <Table.Column width="8%" dataIndex={"statusAli"} title={"Status Ali"}/>
-                        <Table.Column width="8%" dataIndex={"trackingNumber"} title={"Track number"}
-                                      render={(t) => t.toUpperCase()}/>
-                        <Table.Column width="10%" dataIndex={"vendor"} title={"Vendor"}/>
-                        <Table.Column width="8%" dataIndex={"cost"} title={"Cost"}/>
-                        <Table.Column width="10%" dataIndex={"buyer"} title={"Buyer"}/>
-                        <Table.Column width="10%" dataIndex={"errorsNotes"} title={"Error, Notes"}/>
+                        <Table.Column width="7%" dataIndex={"statusDW"} title={"Status DW"} render={(s) => List.prepareStatusDW(s)}/>
+                        <Table.Column width="7%" dataIndex={"statusAli"} title={"Status Ali"} render={(s) => List.prepareStatusAli(s)}/>
+                        <Table.Column width="13%" dataIndex={"trackingNumber"} title={"Track number"}
+                                      render={(t) => t.join(', ').toUpperCase()}/>
+                        <Table.Column width="13%" dataIndex={"vendor"} title={"Vendor"}/>
+                        <Table.Column width="7%" dataIndex={"cost"} title={"Cost"} render={(p) => List.preparePrice(p)}/>
+                        <Table.Column width="13%" dataIndex={"buyer"} title={"Buyer"}/>
+                        <Table.Column width="13%" dataIndex={"errorsNotes"} title={"Error, Notes"}/>
                         <Table.Column width="1%" dataIndex={"action"} title={""} render={(_, {_id}: any) => (
-                            <Link to={`/order/${_id}`}><Icon type={"form"}/></Link>
+                            <Link to={`/orders/${_id}`}><Icon type={"form"}/></Link>
                         )}/>
                     </Table>
-                </>}
+                </div>}
             </Query>
         </>
     }
