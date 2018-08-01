@@ -43,6 +43,7 @@
     "graphql-tag": "^2.9.2",
     "lodash.debounce": "^4.0.8",
     "react-apollo": "^2.1.8",
+    "react-image-cropper-ts": "github:jchoi85/react-image-cropper-ts",
     "react-wysiwyg-typescript": "^1.0.2",
     "url-loader": "^1.0.1"
   }

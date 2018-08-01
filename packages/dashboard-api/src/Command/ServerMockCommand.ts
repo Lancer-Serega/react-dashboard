@@ -7,7 +7,6 @@ import * as morgan from "morgan";
 import {DateTimeType} from "../GraphQL/DateTimeType";
 import {BaseCommand} from "./BaseCommand";
 import bodyParser = require("body-parser");
-import BaseModel from "./Model/BaseModel";
 
 export class ServerMockCommand extends BaseCommand {
     constructor() {
@@ -88,108 +87,44 @@ export class ServerMockCommand extends BaseCommand {
 
         const order = () => ({
             _id: () => incOrderId(),
-            numberDW: () => rand(100000000, 999999999),
-            numberAli: () => rand(100000000, 999999999),
-            created  : () => faker.date.past(),
-            statusDW: () => faker.random.arrayElement(["processed","completed","open","failed","canceled","backordered"]),
-            statusAli: () => faker.random.arrayElement(["processed","shipped","created","failed"]),
-            trackingNumber: () => [faker.random.alphaNumeric(13), faker.random.alphaNumeric(13)],
-            vendor: () => faker.random.words(2),
+            product: () => rand(1, 999),
+            created: () => faker.date.past(),
+            customerId: () => rand(1, 9999),
+            customerName: () => faker.random.words(2),
+            customerAddress: () => faker.address.streetAddress(true),
+            buyerId: () => rand(1, 9999),
+            buyerEmail: () => faker.internet.email(),
+            buyerName: () => faker.random.words(3),
+            buyerAddress: () => faker.address.streetAddress(true),
+            vendorId: () => rand(1, 9999),
+            vendorName: () => faker.random.words(2),
+            vendorStatus: () => faker.random.arrayElement(["processed","shipped","created","failed"]),
+            vendorNumber: () => rand(100000000, 999999999),
             cost: () => faker.finance.amount(0.01, 1000),
-            buyer: () => faker.random.words(3),
-            errorsNotes: () => [faker.random.words(10)],
-        });
-
-        const orderList = () => ({
-            _id: () => incOrderId(),
-            numberDW: () => rand(100000000, 999999999),
-            numberAli: () => rand(100000000, 999999999),
-            created  : () => faker.date.past(),
-            statusDW: () => faker.random.arrayElement(["processed","completed","open","failed","canceled","backordered"]),
-            statusAli: () => faker.random.arrayElement(["processed","shipped","created","failed"]),
+            shippingMethod: () => 'shipping method',
+            shippingCountry: () => faker.address.country,
             trackingNumber: () => [faker.random.alphaNumeric(13), faker.random.alphaNumeric(13)],
-            vendor: () => faker.random.words(2),
-            cost: () => faker.finance.amount(0.01, 1000),
-            buyer: () => faker.random.words(3),
-            errorsNotes: () => [faker.random.words(10)],
+            numberDW: () => rand(100000000, 999999999),
+            statusDW: () => faker.random.arrayElement(["processed","completed","open","failed","canceled","backordered"]),
+            errorNotes: () => [faker.random.words(10)],
         });
 
         const product = () => ({
             _id: () => incProductId(),
-            idAli: () => rand(100000000, 999999999),
+            idVendor: () => rand(100000000, 999999999),
             image: () => faker.image.technics(50, 50),
             title: () => faker.commerce.productName(),
-            status: () => faker.random.arrayElement(["active","hidden","disabled"]),
-            price: () => faker.finance.amount(0.01, 100),
-            count: () => rand(0, 999),
-            listPrice: () => faker.finance.amount(0.01, 100),
-            vendor: () => faker.commerce.department(),
             fullDescription: () => faker.lorem.paragraphs(10),
-            quantity: () => rand(1, 1000),
-            created: () => faker.date.past(),
-        });
-
-        const productList = () => ({
-            _id: () => incProductId(),
-            idAli: () => rand(100000000, 999999999),
-            image: () => faker.image.technics(50, 50),
-            title: () => faker.commerce.productName(),
-            status: () => faker.random.arrayElement(["active","hidden","disabled"]),
             price: () => faker.finance.amount(0.01, 100),
-            count: () => rand(0, 999),
             listPrice: () => faker.finance.amount(0.01, 100),
-            vendor: () => faker.commerce.department(),
-            quantity: () => rand(1, 1000),
-            created: () => faker.date.past(),
-        });
-
-        const productGeneralInformation = () => ({
-            _id: () => incProductId(),
-            idAli: () => rand(100000000, 999999999),
-            title: () => faker.commerce.productName(),
             status: () => faker.random.arrayElement(["active","hidden","disabled"]),
-            price: () => faker.finance.amount(0.01, 100),
+            quantity: () => rand(1, 1000),
+            count: () => rand(0, 999),
             vendor: () => faker.commerce.department(),
-            fullDescription: () => faker.lorem.paragraphs(10),
-            category: () => faker.commerce.productMaterial(),
+            created: () => faker.date.past(),
+            category: () => faker.random.word(),
             linkToDw: () => faker.internet.url(),
-            linkToAli: () => faker.internet.url(),
-        });
-
-        const productOptionsSettings = () => ({
-            _id: () => incProductId(),
-            optionsType: () => faker.random.arrayElement(['simultaneous', 'sequential']),
-            exceptionsType: () => faker.random.arrayElement(['forbidden', 'allowed']),
-        });
-
-        const productPricingInventory = () => ({
-            _id: () => incProductId(),
-            idAli: () => rand(100000000, 999999999),
-            listPrice: () => faker.finance.amount(0.01, 1000),
-            inStock: () => faker.random.number(99999),
-            zeroPriceAction: () => faker.random.arrayElement(['R', 'P', 'A']),
-            inventory: () => faker.random.arrayElement(['B', 'D']),
-            orderQuantityMin: () => rand(1, 10),
-            orderQuantityMax: () => rand(11, 100),
-            quantityStep: () => faker.random.number(999),
-            listQuantityCount: () => faker.random.number(999),
-            vat: () => faker.random.boolean(),
-        });
-
-        const productAvailability = () => ({
-            _id: () => incProductId(),
-            userGroups: () => ['All', 'Registered user'],
-            creationDate: () => faker.date.past(),
-            availSince: () => faker.date.past(),
-            outOfStockActions: () => faker.random.arrayElement(['N', 'B', 'S']),
-        });
-
-        const productExtra = () => ({
-            _id: () => incProductId(),
-            shortDescription: () => faker.lorem.paragraphs(10),
-            popularity: () => faker.random.word(),
-            searchWords: () => faker.random.word(),
-            promoText: () => faker.random.word(),
+            linkToVendor: () => faker.internet.url(),
         });
 
         return {
@@ -210,7 +145,7 @@ export class ServerMockCommand extends BaseCommand {
                         node: () => new MockList(limit.limit, user)
                     });
                 },
-                productList: (root: any, {limit}: any) => {
+                products: (root: any, {limit}: any) => {
                     return ({
                         skip: limit.skip,
                         limit: limit.limit,
@@ -218,7 +153,7 @@ export class ServerMockCommand extends BaseCommand {
                         node: () => new MockList(limit.limit, product)
                     });
                 },
-                orderList: (root: any, {limit}: any) => {
+                orders: (root: any, {limit}: any) => {
                     return ({
                         skip: limit.skip,
                         limit: limit.limit,
@@ -229,15 +164,8 @@ export class ServerMockCommand extends BaseCommand {
             }),
             User: user,
             Post: post,
-            Order: order,
-            OrderList: orderList,
             Product: product,
-            ProductList: productList,
-            ProductGeneralInformation: productGeneralInformation,
-            ProductOptionsSettings: productOptionsSettings,
-            ProductPricingInventory: productPricingInventory,
-            ProductAvailability: productAvailability,
-            ProductExtra: productExtra,
+            Order: order,
             DateTime: () => new Date()
         };
     }

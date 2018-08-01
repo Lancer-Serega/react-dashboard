@@ -8,15 +8,15 @@ export default class Order extends BaseModel {
         return {
             _id: () => 1,//BaseModel.createAutoIncrement(),
             numberDW: () => BaseModel.rand(100000000, 999999999),
-            numberAli: () => BaseModel.rand(100000000, 999999999),
+            vendorNumber: () => BaseModel.rand(100000000, 999999999),
             created  : () => faker.date.past(),
             statusDW: () => faker.random.arrayElement(["processed","completed","open","failed","canceled","backordered"]),
-            statusAli: () => faker.random.arrayElement(["processed","shipped","created","failed"]),
+            vendorStatus: () => faker.random.arrayElement(["processed","shipped","created","failed"]),
             trackingNumber: () => [faker.random.alphaNumeric(13), faker.random.alphaNumeric(13)],
-            vendor: () => faker.random.words(2),
+            vendorName: () => faker.random.words(2),
             cost: () => faker.finance.amount(0.01, 1000),
-            buyer: () => faker.random.words(3),
-            errorsNotes: () => [faker.random.words(10)],
+            buyerName: () => faker.random.words(3),
+            errorNotes: () => [faker.random.words(10)],
         };
     }
 }

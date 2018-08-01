@@ -8,19 +8,19 @@ import {css} from "emotion";
 
 const query = gql`
     query OrderListQuery ($search: OrdersSearchInput, $limit: ListLimit) {
-        orderList (search: $search, limit: $limit) {
+        orders (search: $search, limit: $limit) {
             node {
                 _id
                 numberDW
-                numberAli
+                vendorNumber
                 created
                 statusDW
-                statusAli
+                vendorStatus
                 trackingNumber
-                vendor
+                vendorName
                 cost
-                buyer
-                errorsNotes
+                buyerName
+                errorNotes
             }
             count
             limit
@@ -40,7 +40,7 @@ export class List<P = {}> extends ListComponent {
         super(props);
     }
 
-    private static prepareStatusAli (status: string) {
+    private static prepareVendorStatus (status: string) {
         return <span className={`color-status-${status.toLowerCase()}`}>{status}</span>
     }
 
@@ -97,8 +97,8 @@ export class List<P = {}> extends ListComponent {
                                 <RangePicker showTime
                                              format="YYYY/MM/DD HH:mm:ss"
                                              style={{width: "100%"}}
-                                             value={this.state.search["createdDate"]}
-                                             onChange={(e: any) => this.handleFilterChange("createdDate", e)}
+                                             value={this.state.search["created"]}
+                                             onChange={(e: any) => this.handleFilterChange("created", e)}
                                 />
                             </Col>
 
@@ -254,29 +254,31 @@ export class List<P = {}> extends ListComponent {
             <Query query={query}
                    fetchPolicy="cache-and-network"
                    variables={this.getQueryVariables()}>
-                {({loading, data}) => <div className="table list-order">
-                    <Table rowKey={"_id"}
-                           pagination={this.getTablePagination(loading, () => data.orderList)}
-                           dataSource={!loading && data.orderList.node || []}
-                           loading={loading}>
-                        <Table.Column width="5%" dataIndex={"_id"} title={"ID"}/>
-                        <Table.Column width="7%" dataIndex={"numberDW"} title={"Number DW"}/>
-                        <Table.Column width="7%" dataIndex={"numberAli"} title={"Number Ali"}/>
-                        <Table.Column width="7%" dataIndex={"created"} title={"Created"}
-                                      render={v => new Date(v).toLocaleDateString()}/>
-                        <Table.Column width="7%" dataIndex={"statusDW"} title={"Status DW"} render={(s) => List.prepareStatusDW(s)}/>
-                        <Table.Column width="7%" dataIndex={"statusAli"} title={"Status Ali"} render={(s) => List.prepareStatusAli(s)}/>
-                        <Table.Column width="13%" dataIndex={"trackingNumber"} title={"Track number"}
-                                      render={(t) => t.join(', ').toUpperCase()}/>
-                        <Table.Column width="13%" dataIndex={"vendor"} title={"Vendor"}/>
-                        <Table.Column width="7%" dataIndex={"cost"} title={"Cost"} render={(p) => List.preparePrice(p)}/>
-                        <Table.Column width="13%" dataIndex={"buyer"} title={"Buyer"}/>
-                        <Table.Column width="13%" dataIndex={"errorsNotes"} title={"Error, Notes"}/>
-                        <Table.Column width="1%" dataIndex={"action"} title={""} render={(_, {_id}: any) => (
-                            <Link to={`/orders/${_id}`}><Icon type={"form"}/></Link>
-                        )}/>
-                    </Table>
-                </div>}
+                {({loading, data}) => {
+                    return <div className="table list-order">
+                        <Table rowKey={"_id"}
+                               pagination={this.getTablePagination(loading, () => data.orders)}
+                               dataSource={!loading && data.orders.node || []}
+                               loading={loading}>
+                            <Table.Column width="5%" dataIndex={"_id"} title={"ID"}/>
+                            <Table.Column width="7%" dataIndex={"numberDW"} title={"Number DW"}/>
+                            <Table.Column width="7%" dataIndex={"vendorNumber"} title={"Number Vendor"}/>
+                            <Table.Column width="7%" dataIndex={"created"} title={"Created"}
+                                          render={v => new Date(v).toLocaleDateString()}/>
+                            <Table.Column width="7%" dataIndex={"statusDW"} title={"Status DW"} render={(s) => List.prepareStatusDW(s)}/>
+                            <Table.Column width="7%" dataIndex={"vendorStatus"} title={"Status Vendor"} render={(s) => List.prepareVendorStatus(s)}/>
+                            <Table.Column width="13%" dataIndex={"trackingNumber"} title={"Track number"}
+                                          render={(t) => t.join(', ').toUpperCase()}/>
+                            <Table.Column width="13%" dataIndex={"vendorName"} title={"Vendor name"}/>
+                            <Table.Column width="7%" dataIndex={"cost"} title={"Cost"} render={(p) => List.preparePrice(p)}/>
+                            <Table.Column width="13%" dataIndex={"buyerName"} title={"Buyer Name"}/>
+                            <Table.Column width="13%" dataIndex={"errorNotes"} title={"Error, Notes"}/>
+                            <Table.Column width="1%" dataIndex={"action"} title={""} render={(_, {_id}: any) => (
+                                <Link to={`/orders/${_id}`}><Icon type={"form"}/></Link>
+                            )}/>
+                        </Table>
+                    </div>
+                }}
             </Query>
         </>
     }

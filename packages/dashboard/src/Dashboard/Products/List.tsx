@@ -7,13 +7,13 @@ import {css} from "emotion";
 import {Link} from "../components/Link";
 
 const query = gql`
-    query ProductListQuery ($search: ProductsSearchInput, $limit: ListLimit) {
-        productList (search: $search, limit: $limit) {
+    query ProductsQuery ($search: ProductsSearchInput, $limit: ListLimit) {
+        products (search: $search, limit: $limit) {
             node {
                 _id
                 image
                 title
-                idAli
+                idVendor
                 status
                 price
                 listPrice
@@ -63,9 +63,9 @@ export class List<P = {}> extends ListComponent<P> {
                     <Col span={8}>
                         <Select mode={"tags"}
                                 style={{width: "100%"}}
-                                value={this.state.search["idAli"]}
-                                onChange={(values) => this.handleFilterChange("idAli", values)}
-                                placeholder={"Search by ali IDs"}/>
+                                value={this.state.search["idVendor"]}
+                                onChange={(values) => this.handleFilterChange("idVendor", values)}
+                                placeholder={"Search by vendor IDs"}/>
                     </Col>
                     <Col span={8}>
                         <Input placeholder={"Search by title"}
@@ -125,25 +125,27 @@ export class List<P = {}> extends ListComponent<P> {
             <Query query={query}
                    fetchPolicy="cache-and-network"
                    variables={this.getQueryVariables()}>
-                {({loading, data}) => <div className="table list-product">
-                    <Table rowKey={"_id"}
-                           pagination={this.getTablePagination(loading, () => data.productList)}
-                           dataSource={!loading && data.productList.node || []}
-                           loading={loading}>
-                        <Table.Column dataIndex={"image"} title={"Image"} render={(src: string) => (<img src={src} />)}/>
-                        <Table.Column dataIndex={"_id"} title={"ID"}/>
-                        <Table.Column dataIndex={"idAli"} title={"ID ali"} />
-                        <Table.Column dataIndex={"name"} title={"Name"} />
-                        <Table.Column dataIndex={"status"} title={"Status"} render={(s) => List.prepareStatus(s)} />
-                        <Table.Column dataIndex={"price"} title={"Price ($)"} className="price" render={(p) => List.preparePrice(p)} />
-                        <Table.Column dataIndex={"listPrice"} title={"List Price ($)"} className="price" render={(p) => List.preparePrice(p)} />
-                        <Table.Column dataIndex={"quantity"} title={"Quantity"} />
-                        <Table.Column dataIndex={"created"} title={"Created"} render={v => new Date(v).toLocaleDateString()}/>
-                        <Table.Column dataIndex={"action"} title={""} render={(_, {_id}: any) => (
-                            <Link to={`/products/${_id}`}><Icon type={"form"}/></Link>
-                        )}/>
-                    </Table>
-                </div>}
+                {({loading, data}) => {
+                    return <div className="table list-product">
+                        <Table rowKey={"_id"}
+                               pagination={this.getTablePagination(loading, () => data.products)}
+                               dataSource={!loading && data.products.node || []}
+                               loading={loading}>
+                            <Table.Column dataIndex={"image"} title={"Image"} render={(src: string) => (<img src={src} />)}/>
+                            <Table.Column dataIndex={"_id"} title={"ID"}/>
+                            <Table.Column dataIndex={"idVendor"} title={"ID ali"} />
+                            <Table.Column dataIndex={"name"} title={"Name"} />
+                            <Table.Column dataIndex={"status"} title={"Status"} render={(s) => List.prepareStatus(s)} />
+                            <Table.Column dataIndex={"price"} title={"Price ($)"} className="price" render={(p) => List.preparePrice(p)} />
+                            <Table.Column dataIndex={"listPrice"} title={"List Price ($)"} className="price" render={(p) => List.preparePrice(p)} />
+                            <Table.Column dataIndex={"quantity"} title={"Quantity"} />
+                            <Table.Column dataIndex={"created"} title={"Created"} render={v => new Date(v).toLocaleDateString()}/>
+                            <Table.Column dataIndex={"action"} title={""} render={(_, {_id}: any) => (
+                                <Link to={`/products/${_id}`}><Icon type={"form"}/></Link>
+                            )}/>
+                        </Table>
+                    </div>
+                }}
             </Query>
         </div>
     }

@@ -1,4 +1,4 @@
-import {Spin} from "antd";
+import {Input, Spin} from "antd";
 import gql from "graphql-tag";
 import * as React from "react";
 import {Query} from "react-apollo";
@@ -7,14 +7,21 @@ import {RouteComponent} from "../components/RouteComponent";
 const query = gql`
     query OrderQuery($_id: Int!) {
         order(_id: $_id) {
-            product {
-                _id
-                image
-                title
-                idAli
-                price
-            }
-            createdDate
+#            product {
+#                image
+#                title
+#                idAli
+#                price
+#                status
+#                listPrice
+#                quantity
+#                count
+#                vendor
+#                created
+#            }
+            _id
+            errorNotes
+            created
             customerId
             customerName
             customerAddress
@@ -26,9 +33,9 @@ const query = gql`
             vendorName
             vendorStatus
             vendorNumber
-            price
-            dwStatus
-            dwNumber
+            cost
+            statusDW
+            numberDW
             shippingMethod
             shippingCountry
             trackingNumber
@@ -52,19 +59,73 @@ export class Form extends RouteComponent<{ id?: string }> {
                         return <h3>Not found</h3>
                     }
 
-                    return <>
-                        <p>ID: <b>{data.order._id}</b></p>
-                        <p>Number Dropwow: <b>{data.order.numberDW}</b></p>
-                        <p>Number AliExpress: <b>{data.order.numberAli}</b></p>
-                        <p>Created: <b>{new Date(data.order.created).toLocaleDateString()}</b></p>
-                        <p>Status Dropwow: <b>{data.order.statusDW}</b></p>
-                        <p>Status AliExpress: <b>{data.order.statusAli}</b></p>
-                        <p>Tracking number: <b>{data.order.trackingNumber.join(', ')}</b></p>
-                        <p>vendor: <b>{data.order.vendor}</b></p>
-                        <p>Cost: <b>{data.order.cost}</b></p>
-                        <p>Buyer: <b>{data.order.buyer}</b></p>
-                        <p>Errors, notes: <b>{data.order.errorsNotes.join('. ')}</b></p>
-                    </>
+                    return <section className="form-inputs">
+                        <div>
+                            <label>ID: {'\u00A0'}
+                                <Input value={this.props.id} disabled />
+                            </label>
+                        </div>
+
+                        <div>
+                            <label>Number Dropwow: {'\u00A0'}
+                                <Input placeholder="Number Dropwow" value={data.order.numberDW} />
+                            </label>
+                        </div>
+
+                        <div>
+                            <label>Number Vendor: {'\u00A0'}
+                                <Input placeholder="Number vendor" value={data.order.vendorNumber} />
+                            </label>
+                        </div>
+
+                        <div>
+                            <label>Created: {'\u00A0'}
+                                <Input placeholder="Created date" value={data.order.created} />
+                            </label>
+                        </div>
+
+                        <div>
+                            <label>Status Dropwow: {'\u00A0'}
+                                <Input placeholder="Created date" value={data.order.statusDW} />
+                            </label>
+                        </div>
+
+                        <div>
+                            <label>Status AliExpress: {'\u00A0'}
+                                <Input placeholder="Status AliExpress" value={data.order.vendorStatus} />
+                            </label>
+                        </div>
+
+                        <div>
+                            <label>Tracking number: {'\u00A0'}
+                                <Input placeholder="Tracking number" value={data.order.trackingNumber.join(', ').toUpperCase()} />
+                            </label>
+                        </div>
+
+                        <div>
+                            <label>Vendor: {'\u00A0'}
+                                <Input placeholder="Vendor" value={data.order.vendorName} />
+                            </label>
+                        </div>
+
+                        <div>
+                            <label>Cost: {'\u00A0'}
+                                <Input placeholder="Cost" value={data.order.cost} />
+                            </label>
+                        </div>
+
+                        <div>
+                            <label>Buyer: {'\u00A0'}
+                                <Input placeholder="Buyer" value={data.order.buyerName} />
+                            </label>
+                        </div>
+
+                        <div>
+                            <label>Buyer: {'\u00A0'}
+                                <Input type="textarea" placeholder="Error Notes" value={data.order.errorNotes} />
+                            </label>
+                        </div>
+                    </section>
                 }}
             </Query>
         </>

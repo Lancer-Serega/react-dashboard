@@ -18,15 +18,10 @@ type Query {
     user(_id: Int!): User
 
     products(limit: ListLimit = {}, search: ProductsSearchInput = {}): ProductsList!
-    productList(limit: ListLimit = {}, search: ProductsSearchInput = {}): ProductsList!
-    productGeneralInformation(_id: Int!): ProductGeneralInformation!
-    productOptionsSettings(_id: Int!): ProductOptionsSettings!
-    productPricingInventory(_id: Int!): ProductPricingInventory!
-    productAvailability(_id: Int!): ProductAvailability!
-    productExtra(_id: Int!): ProductExtra!
+    product(_id: Int!): Product
 
-    order(limit: ListLimit = {}, search: OrdersSearchInput = {}): Orders!
-    orderList(limit: ListLimit = {}, search: OrdersSearchInput = {}): OrdersList!
+    orders(limit: ListLimit = {}, search: OrdersSearchInput = {}): OrdersList!
+    order(_id: Int!): Order
 }
 
 interface ListNode {
@@ -61,7 +56,7 @@ input OrdersSearchInput {
     _id: [Int!]
     productId: [Int!]
     productTitle: [String!]
-    createdDate: [DateTime!]
+    created: [DateTime!]
     customerId: [Int!]
     customerName: [String!]
     customerAddress: [String!]
@@ -103,7 +98,6 @@ type User {
     stats: UserStats!
     created: DateTime!
 }
-# End User
 
 # Post
 type PostsList implements ListNode {
@@ -120,7 +114,6 @@ type Post {
     user_id: Int!
     created: DateTime!
 }
-# End Post
 
 # Product
 type ProductsList implements ListNode {
@@ -132,114 +125,50 @@ type ProductsList implements ListNode {
 
 type Product {
     _id: Int!
+    idVendor: Int!
     image: String!
     title: String!
-    idAli: Int!
+    fullDescription: String!
     price: Float!
-    status: String!
     listPrice: Float!
+    status: String!
     quantity: Int!
     count: Int!
     vendor: String!
     created: DateTime!
-}
-
-type ProductGeneralInformation {
-    _id: Int!
-    idAli: Int!
-    image: String!
-    title: String!
-    status: String!
-    price: Float!
-    vendor: String!
-    fullDescription: String!
     category: String!
     linkToDw: String!
-    linkToAli: String!
+    linkToVendor: String!
 }
-
-type ProductOptionsSettings {
-    _id: Int!
-    optionsType: String!
-    exceptionsType: String!
-}
-
-type ProductPricingInventory {
-    _id: Int!
-    idAli: Int!
-    listPrice: Float!
-    inStock: Int!
-    zeroPriceAction: String!
-    inventory: String!
-    orderQuantityMin: Int!
-    orderQuantityMax: Int!
-    quantityStep: Int!
-    listQuantityCount: Int!
-    vat: Boolean!
-}
-
-type ProductAvailability {
-    _id: Int!
-    userGroups: [String!]!
-    creationDate: DateTime!
-    availSince: DateTime!
-    outOfStockActions: String!
-}
-
-type ProductExtra {
-    _id: Int!
-    detailsView: [String!]!
-    shortDescription: String!
-    popularity: Int!
-    searchWords: String!
-    promoText: String!
-}
-# End Product
 
 # Order
 type OrdersList implements ListNode {
-    node: [Orders!]!
+    node: [Order!]!
     count: Int!
     skip: Int!
     limit: Int!
 }
 
-type Orders {
-    _id: Int!
-    product: [Product!]!
-    numberDW: Int!
-    numberAli: Int!
-    created: DateTime!
-    statusDW: String!
-    statusAli: String!
-    trackingNumber: [String!]!
-    vendor: String!
-    cost: Float!
-    buyer: String!
-    errorsNotes: [String!]!
-}
-
 type Order {
     _id: Int!
     product: [Product!]!
-    createdDate: DateTime!
-    customerId: Int
-    customerName: String
-    customerAddress: String
-    buyerId: Int
-    buyerEmail: String
-    buyerName: String
-    buyerAddress: String
-    vendorId: Int
-    vendorName: String
-    vendorStatus: String
-    vendorNumber: Int
-    price: Float
-    dwStatus: String!
-    dwNumber: Int!
-    shippingMethod: String
-    shippingCountry: String
-    trackingNumber: [String!]
-    errorsNotes: [String!]
+    created: DateTime!
+    customerId: Int!
+    customerName: String!
+    customerAddress: String!
+    buyerId: Int!
+    buyerEmail: String!
+    buyerName: String!
+    buyerAddress: String!
+    vendorId: Int!
+    vendorName: String!
+    vendorStatus: String!
+    vendorNumber: Int!
+    cost: Float!
+    shippingMethod: String!
+    shippingCountry: String!
+    trackingNumber: [String!]!
+    errorNotes: [String!]!
+    numberDW: Int!
+    statusDW: String!
 }
-# End Order
