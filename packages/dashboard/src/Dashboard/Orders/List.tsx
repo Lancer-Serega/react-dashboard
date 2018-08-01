@@ -1,4 +1,4 @@
-import {Button, Col, DatePicker, Icon, Input, Divider, Row, Select, Table, Slider, Collapse} from "antd";
+import {Button, Col, DatePicker, Icon, Input, Divider, Row, Select, Table, Slider, Collapse, Alert} from "antd";
 import gql from "graphql-tag";
 import * as React from "react";
 import {Query} from "react-apollo";
@@ -254,11 +254,20 @@ export class List<P = {}> extends ListComponent {
             <Query query={query}
                    fetchPolicy="cache-and-network"
                    variables={this.getQueryVariables()}>
-                {({loading, data}) => {
+                {({loading, data, error}) => {
+                    if (error) return <Alert
+                        message={"Order not found!"}
+                        description={error && error.message}
+                        type="error"
+                        showIcon
+                    />;
+
+                    const {order: orders} = data;
+
                     return <div className="table list-order">
                         <Table rowKey={"_id"}
-                               pagination={this.getTablePagination(loading, () => data.orders)}
-                               dataSource={!loading && data.orders.node || []}
+                               pagination={this.getTablePagination(loading, () => orders)}
+                               dataSource={!loading && orders.node || []}
                                loading={loading}>
                             <Table.Column width="5%" dataIndex={"_id"} title={"ID"}/>
                             <Table.Column width="7%" dataIndex={"numberDW"} title={"Number DW"}/>

@@ -55,7 +55,9 @@ export class Form extends RouteComponent<{ id?: string }> {
 
                     if (error) return <p>{error}</p>;
 
-                    if (!data) {
+                    const {order} = data;
+
+                    if (!order) {
                         return <h3>Not found</h3>
                     }
 
@@ -68,61 +70,61 @@ export class Form extends RouteComponent<{ id?: string }> {
 
                         <div>
                             <label>Number Dropwow: {'\u00A0'}
-                                <Input placeholder="Number Dropwow" value={data.order.numberDW} />
+                                <Input placeholder="Number Dropwow" value={order.numberDW} />
                             </label>
                         </div>
 
                         <div>
                             <label>Number Vendor: {'\u00A0'}
-                                <Input placeholder="Number vendor" value={data.order.vendorNumber} />
+                                <Input placeholder="Number vendor" value={order.vendorNumber} />
                             </label>
                         </div>
 
                         <div>
                             <label>Created: {'\u00A0'}
-                                <Input placeholder="Created date" value={data.order.created} />
+                                <Input placeholder="Created date" value={order.created} />
                             </label>
                         </div>
 
                         <div>
                             <label>Status Dropwow: {'\u00A0'}
-                                <Input placeholder="Created date" value={data.order.statusDW} />
+                                <Input placeholder="Created date" value={order.statusDW} />
                             </label>
                         </div>
 
                         <div>
                             <label>Status AliExpress: {'\u00A0'}
-                                <Input placeholder="Status AliExpress" value={data.order.vendorStatus} />
+                                <Input placeholder="Status AliExpress" value={order.vendorStatus} />
                             </label>
                         </div>
 
                         <div>
                             <label>Tracking number: {'\u00A0'}
-                                <Input placeholder="Tracking number" value={data.order.trackingNumber.join(', ').toUpperCase()} />
+                                <Input placeholder="Tracking number" value={order.trackingNumber.join(', ').toUpperCase()} />
                             </label>
                         </div>
 
                         <div>
                             <label>Vendor: {'\u00A0'}
-                                <Input placeholder="Vendor" value={data.order.vendorName} />
+                                <Input placeholder="Vendor" value={order.vendorName} />
                             </label>
                         </div>
 
                         <div>
                             <label>Cost: {'\u00A0'}
-                                <Input placeholder="Cost" value={data.order.cost} />
+                                <Input placeholder="Cost" value={order.cost} />
                             </label>
                         </div>
 
                         <div>
                             <label>Buyer: {'\u00A0'}
-                                <Input placeholder="Buyer" value={data.order.buyerName} />
+                                <Input placeholder="Buyer" value={order.buyerName} />
                             </label>
                         </div>
 
                         <div>
                             <label>Buyer: {'\u00A0'}
-                                <Input type="textarea" placeholder="Error Notes" value={data.order.errorNotes} />
+                                <Input type="textarea" placeholder="Error Notes" value={order.errorNotes} />
                             </label>
                         </div>
                     </section>
