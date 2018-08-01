@@ -1,4 +1,4 @@
-import {Button, Col, DatePicker, Divider, Icon, Input, Row, Select, Table} from "antd";
+import {Alert, Button, Col, Collapse, DatePicker, Divider, Icon, Input, Row, Select, Table} from "antd";
 import gql from "graphql-tag";
 import * as React from "react";
 import {Query} from "react-apollo";
@@ -46,90 +46,107 @@ export class List<P = {}> extends ListComponent<P> {
 
     render() {
         const {Option} = Select;
-        const { RangePicker } = DatePicker;
+        const {RangePicker} = DatePicker;
+        const {Panel} = Collapse;
 
         return <div>
-            <h4>Filters</h4>
+            <Collapse>
+                <Panel header="Filters products" key="filter-product">
+                    <div className={filterStyle}>
+                        <Row type={"flex"} gutter={8}>
+                            <Col span={8}>
+                                <Select mode={"tags"}
+                                        style={{width: "100%"}}
+                                        value={this.state.search["_id"]}
+                                        onChange={(values) => this.handleFilterChange("_id", values)}
+                                        placeholder={"Product ids"}/>
+                            </Col>
+                            <Col span={8}>
+                                <Select mode={"tags"}
+                                        style={{width: "100%"}}
+                                        value={this.state.search["idVendor"]}
+                                        onChange={(values) => this.handleFilterChange("idVendor", values)}
+                                        placeholder={"Search by vendor IDs"}/>
+                            </Col>
+                            <Col span={8}>
+                                <Input placeholder={"Search by title"}
+                                       style={{width: "100%"}}
+                                       value={this.state.search["title"]}
+                                       onChange={(e) => this.handleFilterChange("title", e.target.value)}/>
+                            </Col>
 
-            <div className={filterStyle}>
-                <Row type={"flex"} gutter={8}>
-                    <Col span={8}>
-                        <Select mode={"tags"}
-                                style={{width: "100%"}}
-                                value={this.state.search["_id"]}
-                                onChange={(values) => this.handleFilterChange("_id", values)}
-                                placeholder={"Product ids"}/>
-                    </Col>
-                    <Col span={8}>
-                        <Select mode={"tags"}
-                                style={{width: "100%"}}
-                                value={this.state.search["idVendor"]}
-                                onChange={(values) => this.handleFilterChange("idVendor", values)}
-                                placeholder={"Search by vendor IDs"}/>
-                    </Col>
-                    <Col span={8}>
-                        <Input placeholder={"Search by title"}
-                               style={{width: "100%"}}
-                               value={this.state.search["title"]}
-                               onChange={(e) => this.handleFilterChange("title", e.target.value)}/>
-                    </Col>
+                            <br/>
+                            <br/>
 
-                    <br/>
-                    <br/>
+                            <Col span={8}>
+                                <Select
+                                    showSearch
+                                    mode="multiple"
+                                    style={{ width: '100%' }}
+                                    placeholder="Select a vendor"
+                                    optionFilterProp="children"
+                                    onChange={(selectedList) => this.handleFilterChange("vendor", selectedList)}
+                                >
+                                    <Option value="v1">Vendor 1</Option>
+                                    <Option value="v2">Vendor 2</Option>
+                                    <Option value="v3">Vendor 3</Option>
+                                </Select>
+                            </Col>
+                            <Col span={8}>
+                                <Select
+                                    showSearch
+                                    mode="multiple"
+                                    style={{ width: '100%' }}
+                                    placeholder="Select a status"
+                                    optionFilterProp="children"
+                                    onChange={(selectedList) => this.handleFilterChange("status", selectedList)}
+                                >
+                                    <Option value="active">Active</Option>
+                                    <Option value="hidden">Hidden</Option>
+                                    <Option value="disabled">Disabled</Option>
+                                </Select>
+                            </Col>
+                            <Col span={8}>
+                                <RangePicker format='YYYY-MM-DD'
+                                             style={{width: "100%"}}
+                                             value={this.state.search["created"]}
+                                             onChange={(e: any) => this.handleFilterChange("created", e)}
+                                />
+                            </Col>
+                        </Row>
 
-                    <Col span={8}>
-                        <Select
-                            showSearch
-                            mode="multiple"
-                            style={{ width: '100%' }}
-                            placeholder="Select a vendor"
-                            optionFilterProp="children"
-                            onChange={(selectedList) => this.handleFilterChange("vendor", selectedList)}
-                        >
-                            <Option value="v1">Vendor 1</Option>
-                            <Option value="v2">Vendor 2</Option>
-                            <Option value="v3">Vendor 3</Option>
-                        </Select>
-                    </Col>
-                    <Col span={8}>
-                        <Select
-                            showSearch
-                            mode="multiple"
-                            style={{ width: '100%' }}
-                            placeholder="Select a status"
-                            optionFilterProp="children"
-                            onChange={(selectedList) => this.handleFilterChange("status", selectedList)}
-                        >
-                            <Option value="active">Active</Option>
-                            <Option value="hidden">Hidden</Option>
-                            <Option value="disabled">Disabled</Option>
-                        </Select>
-                    </Col>
-                    <Col span={8}>
-                        <RangePicker format='YYYY-MM-DD'
-                                     style={{width: "100%"}}
-                                     value={this.state.search["created"]}
-                                     onChange={(e: any) => this.handleFilterChange("created", e)}
-                        />
-                    </Col>
-                </Row>
+                        <div className={"footer"}>
+                            <Button onClick={this.handleResetState}>Reset</Button>
+                        </div>
+                    </div>
+                </Panel>
+            </Collapse>
 
-                <div className={"footer"}>
-                    <Button onClick={this.handleResetState}>Reset</Button>
-                </div>
-            </div>
             <Divider/>
 
             <h3>Products List</h3>
-
             <Query query={query}
                    fetchPolicy="cache-and-network"
                    variables={this.getQueryVariables()}>
-                {({loading, data}) => {
+                {({loading, data, error}) => {
+                    if (error) return <Alert
+                        message={"Product not found!"}
+                        description={error && error.message}
+                        type="error"
+                        showIcon
+                    />;
+
+                    const {products} = data;
+                    if (!products) return <Alert
+                        message={"Product not found!"}
+                        type="warning"
+                        showIcon
+                    />;
+
                     return <div className="table list-product">
                         <Table rowKey={"_id"}
-                               pagination={this.getTablePagination(loading, () => data.products)}
-                               dataSource={!loading && data.products.node || []}
+                               pagination={this.getTablePagination(loading, () => products || {})}
+                               dataSource={!loading && products.node || []}
                                loading={loading}>
                             <Table.Column dataIndex={"image"} title={"Image"} render={(src: string) => (<img src={src} />)}/>
                             <Table.Column dataIndex={"_id"} title={"ID"}/>

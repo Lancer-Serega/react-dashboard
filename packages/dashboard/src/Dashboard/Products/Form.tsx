@@ -131,11 +131,11 @@ export class Form extends RouteComponent<{ id?: number }, IProductForm> {
 
                     if (error) return <p>{error}</p>;
 
-                    if (!data) {
+                    const {product} = data;
+
+                    if (!product) {
                         return <h3>Product Not found</h3>
                     }
-
-                    const product = data.product;
 
                     this.state = {
                         editorState: htmlToDraft(product.fullDescription)
