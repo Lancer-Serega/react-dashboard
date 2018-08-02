@@ -11,16 +11,17 @@ input PeriodInput {
 }
 
 type Query {
-    post(_id: Int!): Post
-    user(_id: Int!): User
-    productGeneralInformation(_id: Int!): ProductGeneralInformation!
-    productOptionsSettings(_id: Int!): ProductOptionsSettings!
-    productPricingInventory(_id: Int!): ProductPricingInventory!
-    productAvailability(_id: Int!): ProductAvailability!
-    productExtra(_id: Int!): ProductExtra!
-    users(limit: ListLimit = {}, search: UsersSearchInput = {}): UsersList!
     posts(limit: ListLimit = {}, search: PostsSearchInput = {}): PostsList!
+    post(_id: Int!): Post
+
+    users(limit: ListLimit = {}, search: UsersSearchInput = {}): UsersList!
+    user(_id: Int!): User
+
     products(limit: ListLimit = {}, search: ProductsSearchInput = {}): ProductsList!
+    product(_id: Int!): Product
+
+    orders(limit: ListLimit = {}, search: OrdersSearchInput = {}): OrdersList!
+    order(_id: Int!): Order
 }
 
 interface ListNode {
@@ -50,6 +51,30 @@ input ProductsSearchInput {
     status: [String!]
     date: [DateTime!]
 }
+
+input OrdersSearchInput {
+    _id: [Int!]
+    productId: [Int!]
+    productTitle: [String!]
+    created: [DateTime!]
+    customerId: [Int!]
+    customerName: [String!]
+    customerAddress: [String!]
+    buyerId: [Int!]
+    buyerEmail: [String!]
+    buyerName: [String!]
+    buyerAddress: [String!]
+    vendorId: [Int!]
+    vendorName: [String!]
+    vendorStatus: [String!]
+    vendorNumber: [String!]
+    price: [Float!]
+    dwStatus: [String!]
+    dwNumber: [String!]
+    shippingMethod: [String!]
+    shippingCountry: [String!]
+    trackingNumber: [String!]
+}
 # End Filters
 
 # User
@@ -73,7 +98,6 @@ type User {
     stats: UserStats!
     created: DateTime!
 }
-# End User
 
 # Post
 type PostsList implements ListNode {
@@ -90,7 +114,6 @@ type Post {
     user_id: Int!
     created: DateTime!
 }
-# End Post
 
 # Product
 type ProductsList implements ListNode {
@@ -102,64 +125,50 @@ type ProductsList implements ListNode {
 
 type Product {
     _id: Int!
+    idVendor: Int!
     image: String!
     title: String!
-    idAli: Int!
-    status: String!
+    fullDescription: String!
     price: Float!
     listPrice: Float!
-    quantity: Int!
-    created: DateTime!
-}
-
-type ProductGeneralInformation {
-    _id: Int!
-    idAli: Int!
-    image: String!
-    title: String!
     status: String!
-    price: Float!
+    quantity: Int!
+    count: Int!
     vendor: String!
-    fullDescription: String!
+    created: DateTime!
     category: String!
     linkToDw: String!
-    linkToAli: String!
+    linkToVendor: String!
 }
 
-type ProductOptionsSettings {
-    _id: Int!
-    optionsType: String!
-    exceptionsType: String!
+# Order
+type OrdersList implements ListNode {
+    node: [Order!]!
+    count: Int!
+    skip: Int!
+    limit: Int!
 }
 
-type ProductPricingInventory {
+type Order {
     _id: Int!
-    idAli: Int!
-    listPrice: Float!
-    inStock: Int!
-    zeroPriceAction: String!
-    inventory: String!
-    orderQuantityMin: Int!
-    orderQuantityMax: Int!
-    quantityStep: Int!
-    listQuantityCount: Int!
-    vat: Boolean!
+    product: [Product!]!
+    created: DateTime!
+    customerId: Int!
+    customerName: String!
+    customerAddress: String!
+    buyerId: Int!
+    buyerEmail: String!
+    buyerName: String!
+    buyerAddress: String!
+    vendorId: Int!
+    vendorName: String!
+    vendorStatus: String!
+    vendorNumber: Int!
+    cost: Float!
+    shippingMethod: String!
+    shippingCountry: String!
+    trackingNumber: [String!]!
+    errorNotes: [String!]!
+    numberDW: Int!
+    statusDW: String!
 }
-
-type ProductAvailability {
-    _id: Int!
-    userGroups: [String!]!
-    creationDate: DateTime!
-    availSince: DateTime!
-    outOfStockActions: String!
-}
-
-type ProductExtra {
-    _id: Int!
-    detailsView: [String!]!
-    shortDescription: String!
-    popularity: Int!
-    searchWords: String!
-    promoText: String!
-}
-# End Product

@@ -13,7 +13,7 @@ class BreadcrumbsDashboard extends React.Component<IBreadcrumbsProps> {
             '/': 'Home',
             '/users': 'Users',
             '/posts': 'Posts',
-            // '/orders': 'Orders',
+            '/orders': 'Orders',
             '/products': 'Products',
         };
 

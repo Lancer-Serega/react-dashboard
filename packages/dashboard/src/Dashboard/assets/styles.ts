@@ -28,30 +28,73 @@ body {
     max-width: 60%;
 }
 
-.list-product .price {
+.table td {
+    font-size: 12px;
+    word-break: normal !important;
+}
+
+.table .price {
     text-align: right;
 }
 
-.list-product .status {
+.table [class^=color-status-] {
+    padding: 3px 5px;
     border-radius: 3px;
+    text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
+    white-space: nowrap;
+    color: #fff;
+    font-weight: lighter;
 }
 
-[class^=color-status-] {
-    padding: 5px;
-    border-radius: 3px;
+.table .color-status-active {
+    background-image: linear-gradient(to bottom,#05df15,#008c06);
 }
 
-.color-status-active {
-    background-color: #04e4048a;
+.table .color-status-hidden {
+    background-image: linear-gradient(to bottom,#e8e8e8,#b5b5b5);
 }
 
-.color-status-hidden {
-    background-color: #94968f99;
+.table .color-status-disabled {
+    background-image: linear-gradient(to bottom,#ff8b62,#fb4100);
 }
 
-.color-status-disabled {
-    background-color: #ff08028a;
+.table .color-status-processed {
+    background-image: linear-gradient(to bottom,#05df15,#008c06);
 }
 
+.table .color-status-completed {
+    background-image: linear-gradient(to bottom,#badf89,#8bca39);
+}
 
+.table .color-status-open {
+    background-image: linear-gradient(to bottom,#ffba6f,#ff8908);
+}
+
+.table .color-status-failed {
+    background-image: linear-gradient(to bottom,#ff8b62,#fb4100);
+}
+
+.table .color-status-declined {
+    background-image: linear-gradient(to bottom,#c8bfbf,#fbea00);
+}
+
+.table .color-status-canceled {
+    background-image: linear-gradient(to bottom,#e8e8e8,#b5b5b5);
+}
+
+.table .color-status-backordered {
+    background-image: linear-gradient(to bottom,#71c8f9,#10a1f5);
+}
+
+.table .color-status-awaiting-call {
+    background-image: linear-gradient(to bottom,#e1725c,#b63a21);
+}
+
+.table .color-status-shipped {
+    background-image: linear-gradient(to bottom,#badf89,#8bca39);
+}
+
+.table .color-status-created {
+    background-image: linear-gradient(to bottom,#05df15,#008c06);
+}
 `;

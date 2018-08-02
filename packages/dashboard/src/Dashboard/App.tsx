@@ -79,12 +79,12 @@ export class App extends React.Component<Props> {
                         >
                             <Menu.Item key="/posts">List</Menu.Item>
                         </SubMenu>
-                        {/*<SubMenu*/}
-                            {/*key="orders"*/}
-                            {/*title={<span><Icon type="solution" /><span>Order</span></span>}*/}
-                        {/*>*/}
-                            {/*<Menu.Item key="/orders">List</Menu.Item>*/}
-                        {/*</SubMenu>*/}
+                        <SubMenu
+                            key="orders"
+                            title={<span><Icon type="solution" /><span>Order</span></span>}
+                        >
+                            <Menu.Item key="/orders">List</Menu.Item>
+                        </SubMenu>
                         <SubMenu
                             key="products"
                             title={<span><Icon type="tablet" /><span>Product</span></span>}

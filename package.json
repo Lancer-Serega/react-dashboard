@@ -6,5 +6,8 @@
   },
   "license": "UNLICENSED",
   "private": true,
-  "scripts": {}
+  "scripts": {},
+  "dependencies": {
+    "mobx-react-form": "^1.35.1"
+  }
 }
